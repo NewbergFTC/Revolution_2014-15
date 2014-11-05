@@ -1,52 +1,76 @@
 #define MOTOR_SPEED_MAX  100
 #define MOTOR_SPEED_MIN  -100
 #define MOTOR_SPEED_ZERO 0
-#define MOTOR_COUNT      6
+#define MOTOR_COUNT      8
+#define SERVO_COUNT      6	// ish
 #define SERVO_POS_MAX    255
 #define SERVO_POS_MIN    0
 
-typedef struct
-{
-	tMotor varMotor;
- short speed;
-}RunnableMotor;
-
-RunableMotor createRunnableMotor(tMotor m, short s)
-{
-	RunnableMotor result;
-	result.varMotor = m;
-	result.speed = s;
-
-	return result;
-};
-
-RunnableMotor motorFrontLeft   = createRunnableMotor(frontLeft,   0);
-RunnableMotor motorFrontRight  = createRunnableMotor(frontRight,  0);
-RunnableMotor motorBackLeft    = createRunnableMotor(backLeft,    0);
-RunnableMotor motorBackRight   = createRunnableMotor(backRight,   0);
-RunnableMotor motorLinearLeft  = createRunnableMotor(linearLeft,  0);
-RunnableMotor motorLinearRight = createRunnableMotor(linearRight, 0);
-
-// Motor stuff
-RunnableMotor motorsToRun[MOTOR_COUNT];
+unsigned short motorsToRun[MOTOR_COUNT];
 unsigned short motorsToRunCount;
-unsigned short motorRunTime;
+unsigned short motorsRunTime;
+unsigned short motorsReturnSpeed;
+unsigned short motorsRunSpeed;
 
+unsigned short servosToRun[SERVO_COUNT];
+unsigned short servosToRunCount;
+unsigned short servosAngle;	// I don't need grammer...
+unsigned short servosChangeRate;
+
+/* Set:
+ * motorsToRun[] with the motors to run, starting at element 0
+ * motorsToRunCount with the number of motors to run
+ * motorsRunTime to the ammount of time the motors will run
+ * motorsRunSpeed to the speed for the motors to run at
+ * motorsReturnSpeed to the speed for the motos to return to after running
+ */
 task runMotors()
 {
 	unsigned short i;
 
-	for (i = 0; i < motorsToRunCount; ++i)
+	for (i = 0; i <= motorsToRunCount - 1; ++i)
 	{
-		motor[motorsToRun[i].varMotor] = motorsToRun[i].speed;
+		motor[motorsToRun[i]] = motorsRunSpeed;
 	}
 
-	stopTask(runMotors);
+	wait1Msec(motorsRunTime);
+
+	for (i = 0; i <= motorsToRunCount - 1; ++i)
+	{
+		motor[motorsToRun[i]] = motorsReturnSpeed;
+	}
 };
 
-task runMotorsForTime()
+/* Set:
+ * servosToRun[] with the servos to run, starting at element 0
+ * servosToRunCount with the number of servos to run
+ * servosAngle to the angle for the servos
+ * servosChangeRate to the change rate for the servos
+ */
+task runServos()
 {
-	startTask(runMotors);
-	wait1Msec(motorRunTime);
-	stopTask(runMotorsForTime);
-};
+	unsigned short i;
+
+	for (i = 0; i <= servosToRunCount - 1; ++i)
+	{
+		servoChangeRate[servosToRun[i] = servosChangeRate;
+	}
+
+	for (i = 0; i <= servosToRunCount - 1; ++i)
+	{
+		servo[servosToRun[i] = servosAngle;
+	}
+}
+
+
+// TODO
+void setMotorParams(unsigned short motors[MOTORS_COUNT], unsigned short motorsCount, unsigned short motorsTime, unsigned short motorsSpeed, unsigned short motorsReturnSpeed)
+{
+
+}
+
+// TODO
+void setServoParams()
+{
+
+}
