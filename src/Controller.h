@@ -1,3 +1,7 @@
+#ifndef REVOLUTION_CONTROLLER_H
+#define REVOLUTION_CONTROLLER_H
+
+
 #define CONTROLLER_ONE										0x01
 #define CONTROLLER_TWO										0x02
 #define CONTROLLER_BUTTON_Y 						 	4
@@ -69,7 +73,7 @@ bool getKeyUp(short key, unsigned short controller)
 	else
 	{
 		return false;
-  }
+
 };
 
 int getLeftJoyX(unsigned short controller)
@@ -135,3 +139,14 @@ int getRightJoyY(unsigned short controller)
 		return 0;
 	}
 };
+
+Vector2f getLeftJoy(unsigned short controller)
+{
+	return (Vector2f){ getLeftJoyX(controller), getLeftJoyX(controller) };
+};
+
+Vector2f getRightJoy(unsigned short controller)
+{
+	return (Vector2f){ getRightJoyX(controller), getRightJoyX(controller) };
+};
+#endif //REVOLUTION_CONTROLLER_H

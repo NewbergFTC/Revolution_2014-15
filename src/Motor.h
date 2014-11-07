@@ -1,3 +1,6 @@
+#ifndef REVOLUTION_MOTOR_H
+#define REVOLUTION_MOTOR_H
+
 #define MOTOR_SPEED_MAX  100
 #define MOTOR_SPEED_MIN  -100
 #define MOTOR_SPEED_ZERO 0
@@ -11,6 +14,7 @@ unsigned short motorsToRunCount;
 unsigned short motorsRunTime;
 unsigned short motorsReturnSpeed;
 unsigned short motorsRunSpeed;
+bool killMotors;
 
 unsigned short servosToRun[SERVO_COUNT];
 unsigned short servosToRunCount;
@@ -27,13 +31,24 @@ unsigned short servosChangeRate;
 task runMotors()
 {
 	unsigned short i;
+	killMotors = false;
 
 	for (i = 0; i <= motorsToRunCount - 1; ++i)
 	{
 		motor[motorsToRun[i]] = motorsRunSpeed;
 	}
 
-	wait1Msec(motorsRunTime);
+	for (i = motorsRunTime; i > 0; --i)
+	{
+		wait1Msec(1);
+
+		if (killMotors)
+		{
+			stopTask(runMotors);
+		}
+	}
+
+	//wait1Msec(motorsRunTime);
 
 	for (i = 0; i <= motorsToRunCount - 1; ++i)
 	{
@@ -53,24 +68,13 @@ task runServos()
 
 	for (i = 0; i <= servosToRunCount - 1; ++i)
 	{
-		servoChangeRate[servosToRun[i] = servosChangeRate;
+		servoChangeRate[servosToRun[i]] = servosChangeRate;
 	}
 
 	for (i = 0; i <= servosToRunCount - 1; ++i)
 	{
-		servo[servosToRun[i] = servosAngle;
+		servo[servosToRun[i]] = servosAngle;
 	}
 }
 
-
-// TODO
-void setMotorParams(unsigned short motors[MOTORS_COUNT], unsigned short motorsCount, unsigned short motorsTime, unsigned short motorsSpeed, unsigned short motorsReturnSpeed)
-{
-
-}
-
-// TODO
-void setServoParams()
-{
-
-}
+#endif // REVOLUTION_MOTOR_H
