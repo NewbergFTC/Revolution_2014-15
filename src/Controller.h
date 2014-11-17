@@ -149,4 +149,247 @@ Vector2f getRightJoy(unsigned short controller)
 {
 	return (Vector2f){ getRightJoyX(controller), getRightJoyX(controller) };
 };
+
+void handleJoyStick()
+{
+	// Controller One
+	if (getKeyDown(CONTROLLER_BUTTON_A, CONTROLLER_ONE))
+	{
+
+	}
+
+	if (getKeyDown(CONTROLLER_BUTTON_B, CONTROLLER_ONE))
+	{
+
+	}
+
+	if (getKeyDown(CONTROLLER_BUTTON_X, CONTROLLER_ONE))
+	{
+
+	}
+
+	if (getKeyDown(CONTROLLER_BUTTON_Y, CONTROLLER_ONE))
+	{
+
+	}
+
+	if (getKeyDown(CONTROLLER_BUTTON_RIGHT_BUMPPER, CONTROLLER_ONE))
+	{
+
+	}
+
+	if (getKeyDown(CONTROLLER_BUTTON_RIGHT_TRIGGER, CONTROLLER_ONE))
+	{
+
+	}
+
+	if (getKeyDown(CONTROLLER_BUTTON_LEFT_BUMPPER, CONTROLLER_ONE))
+	{
+
+	}
+
+	if (getKeyDown(CONTROLLER_BUTTON_LEFT_TRIGGER, CONTROLLER_ONE))
+	{
+
+	}
+
+	if (getKeyDown(CONTROLLER_BUTTON_START, CONTROLLER_ONE))
+	{
+
+	}
+
+	if (getKeyDown(CONTROLLER_BUTTON_BACK, CONTROLLER_ONE))
+	{
+
+	}
+
+	if (getKeyDown(CONTROLLER_BUTTON_LEFT_JOY_DOWN, CONTROLLER_ONE))
+	{
+
+	}
+
+	if (getKeyDown(CONTROLLER_BUTTON_RIGHT_JOY_DOWN, CONTROLLER_ONE))
+	{
+
+	}
+
+	if (getKeyDown(CONTROLLER_TOPHAT_CENTER, CONTROLLER_ONE))
+	{
+
+	}
+
+	if (getKeyDown(CONTROLLER_TOPHAT_NORTH, CONTROLLER_ONE))
+	{
+
+	}
+
+	if (getKeyDown(CONTROLLER_TOPHAT_NORTH_EAST, CONTROLLER_ONE))
+	{
+
+	}
+
+	if (getKeyDown(CONTROLLER_TOPHAT_EAST, CONTROLLER_ONE))
+	{
+
+	}
+
+	if (getKeyDown(CONTROLLER_TOPHAT_SOUTH_EAST, CONTROLLER_ONE))
+	{
+
+	}
+
+	if (getKeyDown(CONTROLLER_TOPHAT_SOUTH, CONTROLLER_ONE))
+	{
+
+	}
+
+	if (getKeyDown(CONTROLLER_TOPHAT_SOUTH_WEST, CONTROLLER_ONE))
+	{
+
+	}
+
+	if (getKeyDown(CONTROLLER_TOPHAT_WEST, CONTROLLER_ONE))
+	{
+
+	}
+
+	if (getKeyDown(CONTROLLER_TOPHAT_NORTH_WEST, CONTROLLER_ONE))
+	{
+
+	}
+
+	// Controller Two
+	if (getKeyDown(CONTROLLER_BUTTON_A, CONTROLLER_TWO))
+	{
+
+	}
+
+	if (getKeyDown(CONTROLLER_BUTTON_B, CONTROLLER_TWO))
+	{
+
+	}
+
+	if (getKeyDown(CONTROLLER_BUTTON_X, CONTROLLER_TWO))
+	{
+
+	}
+
+	if (getKeyDown(CONTROLLER_BUTTON_Y, CONTROLLER_TWO))
+	{
+
+	}
+
+	if (getKeyDown(CONTROLLER_BUTTON_RIGHT_BUMPPER, CONTROLLER_TWO))
+	{
+
+	}
+
+	if (getKeyDown(CONTROLLER_BUTTON_RIGHT_TRIGGER, CONTROLLER_TWO))
+	{
+
+	}
+
+	if (getKeyDown(CONTROLLER_BUTTON_LEFT_BUMPPER, CONTROLLER_TWO))
+	{
+
+	}
+
+	if (getKeyDown(CONTROLLER_BUTTON_LEFT_TRIGGER, CONTROLLER_TWO))
+	{
+
+	}
+
+	if (getKeyDown(CONTROLLER_BUTTON_START, CONTROLLER_TWO))
+	{
+
+	}
+
+	if (getKeyDown(CONTROLLER_BUTTON_BACK, CONTROLLER_TWO))
+	{
+
+	}
+
+	if (getKeyDown(CONTROLLER_BUTTON_LEFT_JOY_DOWN, CONTROLLER_TWO))
+	{
+
+	}
+
+	if (getKeyDown(CONTROLLER_BUTTON_RIGHT_JOY_DOWN, CONTROLLER_TWO))
+	{
+
+	}
+
+	if (getKeyDown(CONTROLLER_TOPHAT_CENTER, CONTROLLER_TWO))
+	{
+
+	}
+
+	if (getKeyDown(CONTROLLER_TOPHAT_NORTH, CONTROLLER_TWO))
+	{
+
+	}
+
+	if (getKeyDown(CONTROLLER_TOPHAT_NORTH_EAST, CONTROLLER_TWO))
+	{
+
+	}
+
+	if (getKeyDown(CONTROLLER_TOPHAT_EAST, CONTROLLER_TWO))
+	{
+
+	}
+
+	if (getKeyDown(CONTROLLER_TOPHAT_SOUTH_EAST, CONTROLLER_TWO))
+	{
+
+	}
+
+	if (getKeyDown(CONTROLLER_TOPHAT_SOUTH, CONTROLLER_TWO))
+	{
+
+	}
+
+	if (getKeyDown(CONTROLLER_TOPHAT_SOUTH_WEST, CONTROLLER_TWO))
+	{
+
+	}
+
+	if (getKeyDown(CONTROLLER_TOPHAT_WEST, CONTROLLER_TWO))
+	{
+
+	}
+
+	if (getKeyDown(CONTROLLER_TOPHAT_NORTH_WEST, CONTROLLER_TWO))
+	{
+
+	}
+
+	// Some value on the left joy, controller one
+	if (FuzzyEquals(getLeftJoy(CONTROLLER_ONE), ZeroVector2f, CONTROLLER_JOY_ZERO_RANGE_MAX))
+	{
+
+	}
+
+	// Some value on the right joy, controller one
+	if (FuzzyEquals(getRightJoy(CONTROLLER_ONE), ZeroVector2f, CONTROLLER_JOY_ZERO_RANGE_MAX))
+	{
+
+	}
+
+	// Some value on the right joy, controller two
+	if (FuzzyEquals(getLeftJoy(CONTROLLER_TWO), ZeroVector2f, CONTROLLER_JOY_ZERO_RANGE_MAX))
+	{
+
+	}
+
+	// Some value on the right joy, controller two
+	if (FuzzyEquals(getRightJoy(CONTROLLER_TWO), ZeroVector2f, CONTROLLER_JOY_ZERO_RANGE_MAX))
+	{
+
+	}
+
+	// More testing
+	//motor[testMotor] = getLeftJoy(CONTROLLER_ONE).y;
+}
+
 #endif //REVOLUTION_CONTROLLER_H

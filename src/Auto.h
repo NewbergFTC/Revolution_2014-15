@@ -2,10 +2,10 @@
 #define REVOLUTION_AUTO_H
 
 //TODO: real names, add more?
-#define AUTO_ROUTINE_ONE 		1
-#define AUTO_ROUTINE_TWO 		2
+#define AUTO_ROUTINE_ONE 	1
+#define AUTO_ROUTINE_TWO 	2
 #define AUTO_ROUTINE_THREE 	3
-#define AUTO_ROUTINE_FOUR		4
+#define AUTO_ROUTINE_FOUR	4
 
 unsigned short autoRoutine;
 
