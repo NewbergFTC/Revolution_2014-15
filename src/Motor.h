@@ -30,9 +30,9 @@ unsigned short servosChangeRate;
  */
 task runMotors()
 {
-	unsigned short i;
 	killMotors = false;
 
+    unsigned short i;
 	for (i = 0; i <= motorsToRunCount - 1; ++i)
 	{
 		motor[motorsToRun[i]] = motorsRunSpeed;
@@ -47,8 +47,6 @@ task runMotors()
 			stopTask(runMotors);
 		}
 	}
-
-	//wait1Msec(motorsRunTime);
 
 	for (i = 0; i <= motorsToRunCount - 1; ++i)
 	{

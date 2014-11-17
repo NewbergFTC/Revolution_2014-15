@@ -1,6 +1,9 @@
 #ifndef REVOLUTION_UTIL_H
 #define REVOLUTION_UTIL_H
 
+/*
+ * Vector2f
+ */
 typedef struct
 {
 	float x;

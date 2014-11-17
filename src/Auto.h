@@ -1,7 +1,7 @@
 #ifndef REVOLUTION_AUTO_H
 #define REVOLUTION_AUTO_H
 
-//TODO: real names,  add more?
+//TODO: real names, add more?
 #define AUTO_ROUTINE_ONE 		1
 #define AUTO_ROUTINE_TWO 		2
 #define AUTO_ROUTINE_THREE 	3

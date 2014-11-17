@@ -143,6 +143,7 @@ void handleJoyStick()
 
 	}
 
+    // More testing
 	motor[testMotor] = getLeftJoy(CONTROLLER_ONE).y;
 }
 
@@ -166,37 +167,37 @@ task main()
 {
 	initRobot();
 
-	// TODO: Find out what that does
+	// TODO: Find out what this does
 	//waitForStart();
 
 	//autoRoutinePeriod();
 
-	// TODO: Some stuff?
-
 	driverControlledPeriod();
 
-/*
-	unsigned int i;
-	for (i = 0; i <= 100; i += 1)
-	{
-		motor[testMotor] = i;
-		wait1Msec(250);
-	}
+    /* Motor Testing
+     *
+	 * unsigned int i;
+	 * for (i = 0; i <= 100; i += 1)
+	 * {
+	 *     motor[testMotor] = i;
+	 *     wait1Msec(250);
+	 * }
+     *
+	 * for (i = 100; i >= 0; i -= 1)
+	 * {
+	 *     motor[testMotor] = i;
+     *     wait1Msec(250);
+	 * }
+	 */
 
-	for (i = 100; i >= 0; i -= 1)
-	{
-		motor[testMotor] = i;
-		wait1Msec(250);
-	}
-	*/
-
-/*
-	servoTarget[servoOne] = 160;
-	wait1Msec(1000);
-	servoTarget[servoTwo] = 160;
-	wait1Msec(1000);
-	servoTarget[servoOne] = 90;
-	wait1Msec(1000);
-	servoTarget[servo2] = 90;
-	*/
+    /* Servo Testing
+     *
+	 * servoTarget[servoOne] = 160;
+	 * wait1Msec(1000);
+	 * servoTarget[servoTwo] = 160;
+	 * wait1Msec(1000);
+	 * servoTarget[servoOne] = 90;
+	 * wait1Msec(1000);
+	 * servoTarget[servo2] = 90;
+     */
 }
