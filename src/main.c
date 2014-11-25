@@ -42,7 +42,19 @@ void driverControlledPeriod()
 		updateController();
 		handleJoyStick();
 
-		//startTask(runMotors);
+		float r = getRightJoyY(CONTROLLER_ONE);
+
+		if (!FuzzyEquals(r, 0, CONTROLLER_JOY_ZERO_RANGE_MAX)
+		{
+			MoveStraight(r);
+		}
+		else
+		{
+			motor[frontLeft] = 0;
+			motor[frontRight] = 0;
+			motor[backLeft] = 0;
+			motor[backRight] = 0;
+		}
   }
 }
 
@@ -58,7 +70,7 @@ task main()
 	// TODO: Find out what this does
 	//waitForStart();
 
-	//autoRoutinePeriod();
+	autoRoutinePeriod();
 
 	driverControlledPeriod();
 

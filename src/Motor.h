@@ -9,6 +9,29 @@
 #define SERVO_POS_MAX    255
 #define SERVO_POS_MIN    0
 
+void MoveStraight(int speed)
+{
+	if (speed > 100)
+		speed = 100;
+	else if (speed < -100)
+		speed = -100;
+
+	motor[frontLeft] = -speed;
+	motor[frontRight] = speed;
+	motor[backLeft] = -speed;
+	motor[backRight] = speed;
+}
+
+// TODO: Everything turning related...
+void TurnRight()
+{
+
+}
+
+// ### Peice of crap doesn't work ###
+
+// Runnable motors?
+/*
 unsigned short motorsToRun[MOTOR_COUNT];
 unsigned short motorsToRunCount;
 unsigned short motorsRunTime;
@@ -27,15 +50,18 @@ unsigned short servosChangeRate;
  * motorsRunTime to the ammount of time the motors will run
  * motorsRunSpeed to the speed for the motors to run at
  * motorsReturnSpeed to the speed for the motos to return to after running
- */
+ * /
 task runMotors()
 {
 	killMotors = false;
 
-    unsigned short i;
+  unsigned short i;
 	for (i = 0; i <= motorsToRunCount - 1; ++i)
 	{
-		motor[motorsToRun[i]] = motorsRunSpeed;
+		if (motorsToRun[i] != 0)
+		{
+			motor[motorsToRun[i]] = motorsRunSpeed;
+		}
 	}
 
 	for (i = motorsRunTime; i > 0; --i)
@@ -50,7 +76,10 @@ task runMotors()
 
 	for (i = 0; i <= motorsToRunCount - 1; ++i)
 	{
-		motor[motorsToRun[i]] = motorsReturnSpeed;
+		if (motorsToRun[i] != 0)
+		{
+			motor[motorsToRun[i]] = motorsReturnSpeed;
+		}
 	}
 };
 
@@ -59,7 +88,7 @@ task runMotors()
  * servosToRunCount with the number of servos to run
  * servosAngle to the angle for the servos
  * servosChangeRate to the change rate for the servos
- */
+ * /
 task runServos()
 {
 	unsigned short i;
@@ -75,4 +104,18 @@ task runServos()
 	}
 }
 
+void setDriveMotorsActive()
+{
+	motorsToRun[0] = frontLeft;
+	motorsToRun[1] = frontRight;
+	motorsToRun[2] = backLeft;
+	motorsToRun[3] = backRight;
+	motorsToRun[4] = 0;
+	motorsToRun[5] = 0;
+	motorsToRun[6] = 0;
+	motorsToRun[7] = 0;
+
+	motorsToRunCount = 4;
+}
+*/
 #endif // REVOLUTION_MOTOR_H

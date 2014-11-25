@@ -38,6 +38,8 @@
 #define CONTROLLER_JOY_ZERO_RANGE_MAX		7
 
 #include "JoystickDriver.c"
+#include "Util.h"
+#include "Motor.h"
 
 void updateController()
 {
@@ -73,7 +75,7 @@ bool getKeyUp(short key, unsigned short controller)
 	else
 	{
 		return false;
-
+	}
 };
 
 int getLeftJoyX(unsigned short controller)
@@ -140,18 +142,14 @@ int getRightJoyY(unsigned short controller)
 	}
 };
 
-Vector2f getLeftJoy(unsigned short controller)
-{
-	return (Vector2f){ getLeftJoyX(controller), getLeftJoyX(controller) };
-};
-
-Vector2f getRightJoy(unsigned short controller)
-{
-	return (Vector2f){ getRightJoyX(controller), getRightJoyX(controller) };
-};
-
 void handleJoyStick()
 {
+	// TODO: Find a better place for this
+	Vector2f ZeroVector2f;
+	ZeroVector2f.x = 0;
+	ZeroVector2f.y = 0;
+
+
 	// Controller One
 	if (getKeyDown(CONTROLLER_BUTTON_A, CONTROLLER_ONE))
 	{
@@ -364,29 +362,8 @@ void handleJoyStick()
 
 	}
 
-	// Some value on the left joy, controller one
-	if (FuzzyEquals(getLeftJoy(CONTROLLER_ONE), ZeroVector2f, CONTROLLER_JOY_ZERO_RANGE_MAX))
-	{
+	// Drive train motors
 
-	}
-
-	// Some value on the right joy, controller one
-	if (FuzzyEquals(getRightJoy(CONTROLLER_ONE), ZeroVector2f, CONTROLLER_JOY_ZERO_RANGE_MAX))
-	{
-
-	}
-
-	// Some value on the right joy, controller two
-	if (FuzzyEquals(getLeftJoy(CONTROLLER_TWO), ZeroVector2f, CONTROLLER_JOY_ZERO_RANGE_MAX))
-	{
-
-	}
-
-	// Some value on the right joy, controller two
-	if (FuzzyEquals(getRightJoy(CONTROLLER_TWO), ZeroVector2f, CONTROLLER_JOY_ZERO_RANGE_MAX))
-	{
-
-	}
 
 	// More testing
 	//motor[testMotor] = getLeftJoy(CONTROLLER_ONE).y;
