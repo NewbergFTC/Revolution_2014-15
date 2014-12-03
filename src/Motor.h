@@ -9,6 +9,31 @@
 #define SERVO_POS_MAX    255
 #define SERVO_POS_MIN    0
 
+bool stopTurn;
+
+void setDriveMotors(int speed, bool invertLeft, bool invertRight)
+{
+	if (invertLeft)
+		motor[frontLeft] = -speed;
+	else
+		motor[frontLeft] = speed;
+
+	if (invertRight)
+		motor[frontRight] = -speed;
+	else
+		motor[frontRight] = speed;
+
+	if (invertLeft)
+		motor[backLeft] = -speed;
+	else
+		motor[backLeft] = speed;
+
+	if (invertRight)
+		motor[backRight] = -speed;
+	else
+		motor[backRight] = speed;
+}
+
 void MoveStraight(int speed)
 {
 	if (speed > 100)
@@ -16,106 +41,33 @@ void MoveStraight(int speed)
 	else if (speed < -100)
 		speed = -100;
 
-	motor[frontLeft] = -speed;
-	motor[frontRight] = speed;
-	motor[backLeft] = -speed;
-	motor[backRight] = speed;
+	// Might have to invert that
+	setDriveMotors(speed, true, false);
 }
 
-// TODO: Everything turning related...
-void TurnRight()
+task TurnRightStart()
 {
-
+	stopTurn = false;
+	while(!stopTurn)
+	{
+		setDriveMotors(100, false, true);
+	}
+	setDriveMotors(0, false, false);
+	stopTurn = false;
 }
 
-// ### Peice of crap doesn't work ###
-
-// Runnable motors?
-/*
-unsigned short motorsToRun[MOTOR_COUNT];
-unsigned short motorsToRunCount;
-unsigned short motorsRunTime;
-unsigned short motorsReturnSpeed;
-unsigned short motorsRunSpeed;
-bool killMotors;
-
-unsigned short servosToRun[SERVO_COUNT];
-unsigned short servosToRunCount;
-unsigned short servosAngle;	// I don't need grammer...
-unsigned short servosChangeRate;
-
-/* Set:
- * motorsToRun[] with the motors to run, starting at element 0
- * motorsToRunCount with the number of motors to run
- * motorsRunTime to the ammount of time the motors will run
- * motorsRunSpeed to the speed for the motors to run at
- * motorsReturnSpeed to the speed for the motos to return to after running
- * /
-task runMotors()
+task TurnLeft()
 {
-	killMotors = false;
-
-  unsigned short i;
-	for (i = 0; i <= motorsToRunCount - 1; ++i)
+	stopTurn = false;
+	while(!stopTurn)
 	{
-		if (motorsToRun[i] != 0)
-		{
-			motor[motorsToRun[i]] = motorsRunSpeed;
-		}
+		setDriveMotors(100, true, false);
 	}
-
-	for (i = motorsRunTime; i > 0; --i)
-	{
-		wait1Msec(1);
-
-		if (killMotors)
-		{
-			stopTask(runMotors);
-		}
-	}
-
-	for (i = 0; i <= motorsToRunCount - 1; ++i)
-	{
-		if (motorsToRun[i] != 0)
-		{
-			motor[motorsToRun[i]] = motorsReturnSpeed;
-		}
-	}
-};
-
-/* Set:
- * servosToRun[] with the servos to run, starting at element 0
- * servosToRunCount with the number of servos to run
- * servosAngle to the angle for the servos
- * servosChangeRate to the change rate for the servos
- * /
-task runServos()
-{
-	unsigned short i;
-
-	for (i = 0; i <= servosToRunCount - 1; ++i)
-	{
-		servoChangeRate[servosToRun[i]] = servosChangeRate;
-	}
-
-	for (i = 0; i <= servosToRunCount - 1; ++i)
-	{
-		servo[servosToRun[i]] = servosAngle;
-	}
+	setDriveMotors(0, false, false);
+	stopTurn = false;
 }
 
-void setDriveMotorsActive()
-{
-	motorsToRun[0] = frontLeft;
-	motorsToRun[1] = frontRight;
-	motorsToRun[2] = backLeft;
-	motorsToRun[3] = backRight;
-	motorsToRun[4] = 0;
-	motorsToRun[5] = 0;
-	motorsToRun[6] = 0;
-	motorsToRun[7] = 0;
+// TODO: After bot is complete, do some math.
+void Turn(int degree) {}
 
-	motorsToRunCount = 4;
-}
-*/
 #endif // REVOLUTION_MOTOR_H

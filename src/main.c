@@ -6,17 +6,17 @@
 #pragma config(Sensor, S2,     ,               sensorI2CMuxController)
 #pragma config(Sensor, S3,     ,               sensorI2CMuxController)
 #pragma config(Sensor, S4,     ,               sensorI2CMuxController)
-#pragma config(Motor,  motorA,          spinnerServoLeft, tmotorNXT, PIDControl, encoder)
-#pragma config(Motor,  motorB,          spinnerServoRight, tmotorNXT, PIDControl, encoder)
+#pragma config(Motor,  motorA,          spinnerLeft,   tmotorNXT, PIDControl, encoder)
+#pragma config(Motor,  motorB,          spinnerRight,  tmotorNXT, PIDControl, encoder)
 #pragma config(Motor,  motorC,           ,             tmotorNXT, openLoop)
 #pragma config(Motor,  mtr_S1_C1_1,     frontLeft,     tmotorTetrix, openLoop)
 #pragma config(Motor,  mtr_S1_C1_2,     frontRight,    tmotorTetrix, openLoop)
-#pragma config(Motor,  mtr_S1_C2_1,     motorF,        tmotorTetrix, openLoop)
-#pragma config(Motor,  mtr_S1_C2_2,     motorG,        tmotorTetrix, openLoop)
-#pragma config(Motor,  mtr_S2_C1_1,     backLeft,      tmotorTetrix, openLoop)
-#pragma config(Motor,  mtr_S2_C1_2,     backRight,     tmotorTetrix, openLoop)
-#pragma config(Motor,  mtr_S4_C1_1,     testMotor,     tmotorTetrix, openLoop)
-#pragma config(Motor,  mtr_S4_C1_2,     testMotor2,    tmotorTetrix, openLoop)
+#pragma config(Motor,  mtr_S1_C2_1,     backLeft,      tmotorTetrix, openLoop)
+#pragma config(Motor,  mtr_S1_C2_2,     backRight,     tmotorTetrix, openLoop)
+#pragma config(Motor,  mtr_S2_C1_1,     linearLeftTop, tmotorTetrix, openLoop)
+#pragma config(Motor,  mtr_S2_C1_2,     linearLeftBot, tmotorTetrix, openLoop)
+#pragma config(Motor,  mtr_S4_C1_1,     linearRightTop, tmotorTetrix, openLoop)
+#pragma config(Motor,  mtr_S4_C1_2,     linearRightBot, tmotorTetrix, openLoop)
 #pragma config(Servo,  srvo_S3_C1_1,    servoOne,             tServoStandard)
 #pragma config(Servo,  srvo_S3_C1_2,    servoTwo,             tServoStandard)
 #pragma config(Servo,  srvo_S3_C1_3,    servo3,               tServoNone)
@@ -40,10 +40,9 @@ void driverControlledPeriod()
 	while(1)
 	{
 		updateController();
-		handleJoyStick();
 
+		// Wheel forward speed
 		float r = getRightJoyY(CONTROLLER_ONE);
-
 		if (!FuzzyEquals(r, 0, CONTROLLER_JOY_ZERO_RANGE_MAX)
 		{
 			MoveStraight(r);
@@ -55,7 +54,17 @@ void driverControlledPeriod()
 			motor[backLeft] = 0;
 			motor[backRight] = 0;
 		}
-  }
+
+		if (getTopHat(CONTROLLER_ONE) == CONTROLLER_TOPHAT_WEST)
+			TurnLeft();
+		else
+			stopTurn = true;
+
+		if (getTopHat(CONTROLLER_ONE) == CONTROLLER_TOPHAT_EAST)
+			TurnRight();
+		else
+			stopTurn = true;
+	}
 }
 
 void autoRoutinePeriod()
@@ -73,31 +82,4 @@ task main()
 	autoRoutinePeriod();
 
 	driverControlledPeriod();
-
-    /* Motor Testing
-     *
-	 * unsigned int i;
-	 * for (i = 0; i <= 100; i += 1)
-	 * {
-	 *     motor[testMotor] = i;
-	 *     wait1Msec(250);
-	 * }
-     *
-	 * for (i = 100; i >= 0; i -= 1)
-	 * {
-	 *     motor[testMotor] = i;
-     *     wait1Msec(250);
-	 * }
-	 */
-
-    /* Servo Testing
-     *
-	 * servoTarget[servoOne] = 160;
-	 * wait1Msec(1000);
-	 * servoTarget[servoTwo] = 160;
-	 * wait1Msec(1000);
-	 * servoTarget[servoOne] = 90;
-	 * wait1Msec(1000);
-	 * servoTarget[servo2] = 90;
-     */
 }
