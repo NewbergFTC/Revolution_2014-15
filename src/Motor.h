@@ -9,65 +9,141 @@
 #define SERVO_POS_MAX    255
 #define SERVO_POS_MIN    0
 
-bool stopTurn;
+#include "Controller.h"
+
+bool turning;
+// Might be useful in the future
+int frontLeftSpeed;
+int frontRightSpeed;
+int backLeftSpeed;
+int backRightSpeed;
+
+int FixSpeed(int rawSpeed)
+{
+	if (rawSpeed > 100)
+		return 100;
+	else if (rawSpeed < -100)
+		return -100;
+	else
+		return rawSpeed;
+}
+
+void UpdateMotors()
+{
+	motor[frontLeft] = frontLeftSpeed;
+	motor[frontRight] = frontRightSpeed;
+	motor[backLeft] = backLeftSpeed;
+	motor[backRight] = backRightSpeed;
+}
 
 void setDriveMotors(int speed, bool invertLeft, bool invertRight)
 {
 	if (invertLeft)
-		motor[frontLeft] = -speed;
+	{
+		//motor[frontLeft] = -speed;
+		frontLeftSpeed = -speed;
+	}
 	else
-		motor[frontLeft] = speed;
+	{
+		//motor[frontLeft] = speed;
+		frontLeftSpeed = speed;
+	}
 
 	if (invertRight)
-		motor[frontRight] = -speed;
+	{
+		//motor[frontRight] = -speed;
+		frontRightSpeed = -speed;
+	}
 	else
-		motor[frontRight] = speed;
+	{
+		//motor[frontRight] = speed;
+		frontRightSpeed = speed;
+	}
 
 	if (invertLeft)
-		motor[backLeft] = -speed;
+	{
+		//motor[backLeft] = -speed;
+		backLeftSpeed = -speed;
+	}
 	else
-		motor[backLeft] = speed;
+	{
+		//motor[backLeft] = speed;
+		backLeftSpeed = speed;
+	}
 
 	if (invertRight)
-		motor[backRight] = -speed;
+	{
+		//motor[backRight] = -speed;
+		backRightSpeed = -speed;
+	}
 	else
-		motor[backRight] = speed;
+	{
+		//motor[backRight] = speed;
+		backRightSpeed = speed;
+	}
+}
+
+void StopMotors()
+{
+	setDriveMotors(0, false, false);
 }
 
 void MoveStraight(int speed)
 {
-	if (speed > 100)
-		speed = 100;
-	else if (speed < -100)
-		speed = -100;
+	int fixedSpeed = FixSpeed(speed);
 
 	// Might have to invert that
-	setDriveMotors(speed, true, false);
-}
-
-task TurnRightStart()
-{
-	stopTurn = false;
-	while(!stopTurn)
-	{
-		setDriveMotors(100, false, true);
-	}
-	setDriveMotors(0, false, false);
-	stopTurn = false;
-}
-
-task TurnLeft()
-{
-	stopTurn = false;
-	while(!stopTurn)
-	{
-		setDriveMotors(100, true, false);
-	}
-	setDriveMotors(0, false, false);
-	stopTurn = false;
+	setDriveMotors(fixedSpeed, true, false);
 }
 
 // TODO: After bot is complete, do some math.
-void Turn(int degree) {}
+void SpotTurn(int vec)
+{
+	turning = true;
+
+	if (vec > 100)
+	{
+		setDriveMotors(100, false, true);
+	}
+	else if (vec < -100)
+	{
+		setDriveMotors(100, true, false);
+	}
+}
+
+void HandleDriveTrain(int yAxis, int xAxis)
+{
+	int fixedX = FixSpeed(xAxis);
+	int fixedY = FixSpeed(yAxis);
+	bool noX = FuzzyEquals(fixedX, 0, 7);
+
+	// Turning doesn't do what it's meant to, but it works.
+	if (noX && !FuzzyEquals(fixedY, 0, CONTROLLER_JOY_ZERO_RANGE_MAX))
+	{
+		MoveStraight(fixedY);
+	}
+	else if (!noX && fixedX > 0)
+	{
+		// Right
+		frontLeftSpeed -= fixedX;
+		backLeftSpeed -= fixedX;
+		frontRightSpeed = frontLeftSpeed;
+		backRightSpeed = backLeftSpeed;
+	}
+	else if (!noX && fixedX < 0)
+	{
+		// Left
+		frontRightSpeed -= fixedX;
+		backRightSpeed -= fixedX;
+		frontLeftSpeed = frontRightSpeed;
+		backLeftSpeed = backRightSpeed;
+	}
+	else
+	{
+		setDriveMotors(0, false, false);
+	}
+
+	UpdateMotors();
+}
 
 #endif // REVOLUTION_MOTOR_H

@@ -42,12 +42,13 @@ void driverControlledPeriod()
 		updateController();
 
 		// Wheel forward speed
+		/*
 		float r = getRightJoyY(CONTROLLER_ONE);
-		if (!FuzzyEquals(r, 0, CONTROLLER_JOY_ZERO_RANGE_MAX)
+		if ((!FuzzyEquals(r, 0, CONTROLLER_JOY_ZERO_RANGE_MAX) && !turning)
 		{
 			MoveStraight(r);
 		}
-		else
+		else if (!turning)
 		{
 			motor[frontLeft] = 0;
 			motor[frontRight] = 0;
@@ -55,15 +56,18 @@ void driverControlledPeriod()
 			motor[backRight] = 0;
 		}
 
-		if (getTopHat(CONTROLLER_ONE) == CONTROLLER_TOPHAT_WEST)
-			TurnLeft();
+		r = getRightJoyX(CONTROLLER_ONE);
+		if(!FuzzyEquals(r, 0, CONTROLLER_JOY_ZERO_RANGE_MAX)
+		{
+			Turn(r);
+		}
 		else
-			stopTurn = true;
+		{
+			turning = false;
+		}
+		*/
 
-		if (getTopHat(CONTROLLER_ONE) == CONTROLLER_TOPHAT_EAST)
-			TurnRight();
-		else
-			stopTurn = true;
+		HandleDriveTrain(getRightJoyY(CONTROLLER_ONE), getRightJoyX(CONTROLLER_ONE));
 	}
 }
 
