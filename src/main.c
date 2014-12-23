@@ -17,8 +17,8 @@
 #pragma config(Motor,  mtr_S2_C1_2,     linearLeftBot, tmotorTetrix, openLoop)
 #pragma config(Motor,  mtr_S4_C1_1,     linearRightTop, tmotorTetrix, openLoop)
 #pragma config(Motor,  mtr_S4_C1_2,     linearRightBot, tmotorTetrix, openLoop)
-#pragma config(Servo,  srvo_S3_C1_1,    servoOne,             tServoStandard)
-#pragma config(Servo,  srvo_S3_C1_2,    servoTwo,             tServoStandard)
+#pragma config(Servo,  srvo_S3_C1_1,    servoTest1,           tServoStandard)
+#pragma config(Servo,  srvo_S3_C1_2,    servoTest2,           tServoStandard)
 #pragma config(Servo,  srvo_S3_C1_3,    servo3,               tServoNone)
 #pragma config(Servo,  srvo_S3_C1_4,    servo4,               tServoNone)
 #pragma config(Servo,  srvo_S3_C1_5,    servo5,               tServoNone)
@@ -39,35 +39,21 @@ void driverControlledPeriod()
 {
 	while(1)
 	{
-		updateController();
-
-		// Wheel forward speed
-		/*
-		float r = getRightJoyY(CONTROLLER_ONE);
-		if ((!FuzzyEquals(r, 0, CONTROLLER_JOY_ZERO_RANGE_MAX) && !turning)
-		{
-			MoveStraight(r);
-		}
-		else if (!turning)
-		{
-			motor[frontLeft] = 0;
-			motor[frontRight] = 0;
-			motor[backLeft] = 0;
-			motor[backRight] = 0;
-		}
-
-		r = getRightJoyX(CONTROLLER_ONE);
-		if(!FuzzyEquals(r, 0, CONTROLLER_JOY_ZERO_RANGE_MAX)
-		{
-			Turn(r);
-		}
-		else
-		{
-			turning = false;
-		}
-		*/
+		getJoystickSettings(joystick);
 
 		HandleDriveTrain(getRightJoyY(CONTROLLER_ONE), getRightJoyX(CONTROLLER_ONE));
+
+		if (joy1Btn(CONTROLLER_BUTTON_B) == 1)
+		{
+			if (spinning)
+			{
+				StopSpinners();
+			}
+			else
+			{
+				SpinSpinners();
+			}
+		}
 	}
 }
 

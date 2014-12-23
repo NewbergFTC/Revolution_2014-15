@@ -40,11 +40,6 @@
 #include "Util.h"
 #include "Motor.h"
 
-void updateController()
-{
-	getJoystickSettings(joystick);
-};
-
 bool getKeyDown(short key, unsigned short controller)
 {
 	if (controller == CONTROLLER_ONE)

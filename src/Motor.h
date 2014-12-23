@@ -11,7 +11,7 @@
 
 #include "Controller.h"
 
-bool turning;
+bool spinning;
 // Might be useful in the future
 int frontLeftSpeed;
 int frontRightSpeed;
@@ -26,6 +26,20 @@ int FixSpeed(int rawSpeed)
 		return -100;
 	else
 		return rawSpeed;
+}
+
+void SpinSpinners()
+{
+	spinning = true;
+	motor[spinnerLeft] = 100;
+	motor[spinnerRight] = 100;
+}
+
+void StopSpinners()
+{
+	spinning = false;
+	motor[spinnerLeft] = 0;
+	motor[spinnerRight] = 0;
 }
 
 void UpdateMotors()
@@ -94,21 +108,6 @@ void MoveStraight(int speed)
 
 	// Might have to invert that
 	setDriveMotors(fixedSpeed, true, false);
-}
-
-// TODO: After bot is complete, do some math.
-void SpotTurn(int vec)
-{
-	turning = true;
-
-	if (vec > 100)
-	{
-		setDriveMotors(100, false, true);
-	}
-	else if (vec < -100)
-	{
-		setDriveMotors(100, true, false);
-	}
 }
 
 void HandleDriveTrain(int yAxis, int xAxis)
