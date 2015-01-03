@@ -33,8 +33,7 @@
 #define CONTROLLER_JOY_RIGHT_Y_MIN			-128
 #define CONTROLLER_JOY_RIGHT_Y_MAX			127
 // The controller's joysticks don't normally default to zero, but around it
-#define CONTROLLER_JOY_ZERO_RANGE_MIN		-7
-#define CONTROLLER_JOY_ZERO_RANGE_MAX		7
+#define CONTROLLER_JOY_ZERO_RANGE		7
 
 #include "JoystickDriver.c"
 #include "Util.h"

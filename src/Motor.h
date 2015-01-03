@@ -11,21 +11,33 @@
 
 #include "Controller.h"
 
+enum LinearPosition
+{
+	LINEAR_30,
+	LINEAR_60,
+	LINEAR_90
+};
+
 bool spinning;
-// Might be useful in the future
 int frontLeftSpeed;
 int frontRightSpeed;
 int backLeftSpeed;
 int backRightSpeed;
+int linearLeftSpeed;
+int linearRightSpeed;
 
 int FixSpeed(int rawSpeed)
 {
+	/*
 	if (rawSpeed > 100)
 		return 100;
 	else if (rawSpeed < -100)
 		return -100;
 	else
 		return rawSpeed;
+		*/
+
+	return 0.0000141626 * (rawSpeed) * (rawSpeed) * (rawSpeed) - 0.00025542 * (rawSpeed) * (rawSpeed) + 0.581583 * (rawSpeed) + 0.092436;
 }
 
 void SpinSpinners()
@@ -48,6 +60,14 @@ void UpdateMotors()
 	motor[frontRight] = frontRightSpeed;
 	motor[backLeft] = backLeftSpeed;
 	motor[backRight] = backRightSpeed;
+	motor[linearLeft] = linearLeftSpeed;
+	motor[linearRight] = linearRightSpeed;
+}
+
+void setLinearMotors(int speed)
+{
+	linearLeftSpeed = speed;
+	linearRightSpeed = speed;
 }
 
 void setDriveMotors(int speed, bool invertLeft, bool invertRight)
@@ -56,86 +76,133 @@ void setDriveMotors(int speed, bool invertLeft, bool invertRight)
 	{
 		//motor[frontLeft] = -speed;
 		frontLeftSpeed = -speed;
+		backLeftSpeed = -speed;
 	}
 	else
 	{
 		//motor[frontLeft] = speed;
 		frontLeftSpeed = speed;
+		backLeftSpeed = speed;
 	}
 
 	if (invertRight)
 	{
 		//motor[frontRight] = -speed;
 		frontRightSpeed = -speed;
+		backRightSpeed = -speed;
 	}
 	else
 	{
 		//motor[frontRight] = speed;
 		frontRightSpeed = speed;
-	}
-
-	if (invertLeft)
-	{
-		//motor[backLeft] = -speed;
-		backLeftSpeed = -speed;
-	}
-	else
-	{
-		//motor[backLeft] = speed;
-		backLeftSpeed = speed;
-	}
-
-	if (invertRight)
-	{
-		//motor[backRight] = -speed;
-		backRightSpeed = -speed;
-	}
-	else
-	{
-		//motor[backRight] = speed;
 		backRightSpeed = speed;
 	}
 }
 
-void StopMotors()
-{
-	setDriveMotors(0, false, false);
-}
-
 void MoveStraight(int speed)
 {
-	int fixedSpeed = FixSpeed(speed);
-
 	// Might have to invert that
-	setDriveMotors(fixedSpeed, true, false);
+	setDriveMotors(speed, true, false);
 }
 
 void HandleDriveTrain(int yAxis, int xAxis)
 {
 	int fixedX = FixSpeed(xAxis);
 	int fixedY = FixSpeed(yAxis);
-	bool noX = FuzzyEquals(fixedX, 0, 7);
+	bool noX = FuzzyEquals(xAxis, 0, 15);
+
+	nxtDisplayBigTextLine(0, "X: %i", fixedX);
+	nxtDisplayBigTextLine(2, "Y: %i", fixedY);
+
+	if (noX)
+	{
+		frontLeftSpeed = -fixedY;
+		frontRightSpeed = fixedY;
+		backLeftSpeed = -fixedY;
+		backRightSpeed = fixedY;
+	}
+	else if (!noX && fixedX > 0)
+	{
+		// Right
+		frontLeftSpeed = -fixedX;
+		frontRightSpeed = -fixedX;
+		backLeftSpeed = -fixedX;
+		backRightSpeed = -fixedX;
+	}
+	else if (!noX && fixedX < 0)
+	{
+		// Left
+		frontLeftSpeed = -fixedX;
+		frontRightSpeed = -fixedX;
+		backLeftSpeed = -fixedX;
+		backRightSpeed = -fixedX;
+	}
+	else
+	{
+		frontLeftSpeed = 0;
+		frontRightSpeed = 0;
+		backLeftSpeed = 0;
+		backRightSpeed = 0;
+	}
+
+	UpdateMotors();
+}
+
+// TODO: Get an encoder for one of the linear motors and one of the drive train motors
+void SetLinearPosition(LinearPosition pos)
+{
+	switch (pos)
+	{
+		case LINEAR_30:
+		// TODO:
+			break;
+		case LINEAR_60:
+		// TODO:
+			break;
+		case LINEAR_90:
+		// TODO:
+			break;
+	};
+};
+
+/*
+void MoveStraight(int speed)
+{
+	// Might have to invert that
+	setDriveMotors(speed, true, false);
+}
+
+void HandleDriveTrain(int yAxis, int xAxis)
+{
+	//nxtDisplayBigTextLine(0, "%i", xAxis);
+	int fixedX = FixSpeed(xAxis) * 2;
+	//nxtDisplayBigTextLine(0, "%f", fixedX);
+	int fixedY = FixSpeed(yAxis);
+	//nxtDisplayBigTextLine(0, "%f", fixedY);
+	bool noX = FuzzyEquals(xAxis, 0, CONTROLLER_JOY_ZERO_RANGE_MAX);
 
 	// Turning doesn't do what it's meant to, but it works.
-	if (noX && !FuzzyEquals(fixedY, 0, CONTROLLER_JOY_ZERO_RANGE_MAX))
+	if (noX && !FuzzyEquals(yAxis, 0, CONTROLLER_JOY_ZERO_RANGE_MAX))
 	{
 		MoveStraight(fixedY);
 	}
 	else if (!noX && fixedX > 0)
 	{
 		// Right
-		frontLeftSpeed -= fixedX;
-		backLeftSpeed -= fixedX;
-		frontRightSpeed = frontLeftSpeed;
-		backRightSpeed = backLeftSpeed;
+	  nxtDisplayBigTextLine(0, "Right");
+		frontLeftSpeed += fixedX;
+		backLeftSpeed += fixedX;
+		frontRightSpeed -= fixedX;
+		backRightSpeed -= fixedX;
 	}
 	else if (!noX && fixedX < 0)
 	{
 		// Left
-		frontRightSpeed -= fixedX;
-		backRightSpeed -= fixedX;
-		frontLeftSpeed = frontRightSpeed;
-		backLeftSpeed = backRightSpeed;
+		nxtDisplayBigTextLine(0, "Left");
+		frontLeftSpeed -= fixedX;
+		backLeftSpeed -= fixedX;
+		frontRightSpeed += fixedX;
+		backRightSpeed += fixedX;
 	}
 	else
 	{
@@ -144,5 +211,6 @@ void HandleDriveTrain(int yAxis, int xAxis)
 
 	UpdateMotors();
 }
+*/
 
 #endif // REVOLUTION_MOTOR_H
