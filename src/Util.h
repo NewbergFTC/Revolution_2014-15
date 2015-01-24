@@ -1,6 +1,8 @@
 #ifndef REVOLUTION_UTIL_H
 #define REVOLUTION_UTIL_H
 
+typedef unsigned int uint;
+
 /*
  * General Helpers
  */

@@ -6,56 +6,73 @@
 #define AUTO_ROUTINE_TWO 	2
 #define AUTO_ROUTINE_THREE 	3
 #define AUTO_ROUTINE_FOUR	4
+#define AUTO_ROUTINE_COUNT 4
 
 unsigned short autoRoutine;
 
 // TODO: Routines
-void  routineOne()
+
+int selectAutoRoutine()
 {
+	int currMenuPos = -1;
+	int finalMenuPos = -1;
+	nNxtButtonTask = -2;
 
-};
+	nxtDisplayBigTextLine(1,"RouteMenu");
+	nxtDisplayTextLine(3,"Use arrow keys");
+	nxtDisplayTextLine(4,"to choose an");
+	nxtDisplayTextLine(5,"automomous");
+	nxtDisplayTextLine(6,"routine. Press");
+	nxtDisplayTextLine(7,"orange button");
+	nxtDisplayTextLine(8,"to select.");
 
-void routineTwo()
-{
-
-};
-
-void routineThree()
-{
-
-};
-
-void routineFour()
-{
-
-};
-
-void selectAutoRoutine()
-{
-
-};
-
-void runAutoRoutine()
-{
-	if (autoRoutine <= 0 || autoRoutine >= 5)
+	while (1)
 	{
-		return;
-	}
+		TButtons nBtn;
 
-	switch(autoRoutine)
-	{
-		case AUTO_ROUTINE_ONE:
-			routineOne();
-			break;
-		case AUTO_ROUTINE_TWO:
-			routineTwo();
-			break;
-		case AUTO_ROUTINE_THREE:
-			routineThree();
-			break;
-		case AUTO_ROUTINE_FOUR:
-			routineFour();
-			break;
+		while (1)
+		{
+			nBtn = nNxtButtonPressed;
+			if (nBtn != -1)
+				break;
+		}
+
+		switch (nBtn)
+		{
+			case kLeftButton:
+				currMenuPos -= 1;
+				if (currMenuPos < 0)
+				{
+					currMenuPos = AUTO_ROUTINE_COUNT - 1;
+				}
+				break;
+			case kRightButton:
+				currMenuPos += 1;
+				if (currMenuPos == AUTO_ROUTINE_COUNT)
+				{
+					currMenuPos = 0;
+				}
+				break;
+			case kEnterButton:
+				finalMenuPos = currMenuPos;
+				break;
+			default:
+				break;
+		}
+
+	  while (1)
+	  {
+	  	nBtn = nNxtButtonPressed;
+	  	if (nBtn == -1)
+	  		break;
+		}
+
+		if (finalMenuPos > -1)
+			return finalMenuPos + 1;
+
+			eraseDisplay();
+			nxtDisplayBigTextLine(1, "%i", currMenuPos + 1);
+			nxtDisplayTextLine(5, "Choice %i of %i", currMenuPos + 1, AUTO_ROUTINE_COUNT);
 	}
 };
 
