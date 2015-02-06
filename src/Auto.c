@@ -95,7 +95,12 @@ void  routineOne()
 		eraseDisplay();
 		nxtDisplayBigTextLine(0, "One");
 
-		Drive(-60, 90);
+		Drive(-101, 90);
+		wait1Msec(250);
+		startTask(DeployGrabbers);
+		Turn(-WHEEL_45_DEGREES, 90);
+		wait1Msec(250);
+		Drive(12, 90);
 		wait1Msec(250);
 };
 

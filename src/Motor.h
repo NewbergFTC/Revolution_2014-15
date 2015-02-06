@@ -13,15 +13,11 @@
 #define WHEEL_CIRCUMFRENCE (WHEEL_DIAMETER * PI)
 #define WHEEL_90_DEGREES (1700)
 #define WHEEL_45_DEGREES (WHEEL_90_DEGREES / 2)
+#define SERVO_LEFT_DOWN (178)
+#define SERVO_LEFT_UP (100)
+#define SERVO_RIGHT_DOWN (100)
+#define SERVO_RIGHT_UP (275)
 
-enum LinearPosition
-{
-	LINEAR_30,
-	LINEAR_60,
-	LINEAR_90
-};
-
-bool spinning;
 int frontLeftSpeed;
 int frontRightSpeed;
 int backLeftSpeed;
@@ -36,16 +32,27 @@ int FixSpeed(int rawSpeed)
 
 void SpinSpinners()
 {
-	spinning = true;
 	motor[spinnerLeft] = 100;
 	motor[spinnerRight] = 100;
 }
 
 void StopSpinners()
 {
-	spinning = false;
 	motor[spinnerLeft] = 0;
 	motor[spinnerRight] = 0;
+}
+
+task DeployGrabbers()
+{
+	servo[pullerLeft] = SERVO_LEFT_DOWN;
+	servo[pullerRight] = SERVO_RIGHT_DOWN;
+}
+
+
+task RetractGrabbers()
+{
+	servo[pullerLeft] = SERVO_LEFT_UP;
+	servo[pullerRight] = SERVO_RIGHT_UP;
 }
 
 void UpdateMotors()
@@ -99,7 +106,7 @@ void HandleDriveTrain(int yAxis, int xAxis)
 {
 	int fixedX = FixSpeed(xAxis);
 	int fixedY = FixSpeed(yAxis);
-	bool noX = FuzzyEquals(xAxis, 0, 20);
+	bool noX = FuzzyEquals(xAxis, 0, 15);
 
 	if (noX)
 	{
@@ -148,6 +155,19 @@ void Turn(float degree, float speed)
 				motor[backRight] = speed;
 				motor[frontLeft] = -speed;
 				motor[backLeft] = -speed;
+			}
+			complete = true;
+		}
+
+		if (nMotorEncoder[backRight] > goal && !complete)
+		{
+			while (nMotorEncoder[backRight] > goal)
+			{
+				//nxtDisplayBigTextLine(6, "%i", nMotorEncoder[backRight]);
+				motor[frontRight] = -speed;
+				motor[backRight] = -speed;
+				motor[frontLeft] = speed;
+				motor[backLeft] = speed;
 			}
 			complete = true;
 		}
@@ -201,70 +221,5 @@ void HandleLinear(float y)
 	linearLeftSpeed = fixed;
 	linearRightSpeed = -fixed;
 }
-
-// TODO: Get an encoder for one of the linear motors and one of the drive train motors
-void SetLinearPosition(LinearPosition pos)
-{
-	switch (pos)
-	{
-		case LINEAR_30:
-		// TODO:
-			break;
-		case LINEAR_60:
-		// TODO:
-			break;
-		case LINEAR_90:
-		// TODO:
-			break;
-	};
-};
-
-/*
-void MoveStraight(int speed)
-{
-	// Might have to invert that
-	setDriveMotors(speed, true, false);
-}
-
-void HandleDriveTrain(int yAxis, int xAxis)
-{
-	//nxtDisplayBigTextLine(0, "%i", xAxis);
-	int fixedX = FixSpeed(xAxis) * 2;
-	//nxtDisplayBigTextLine(0, "%f", fixedX);
-	int fixedY = FixSpeed(yAxis);
-	//nxtDisplayBigTextLine(0, "%f", fixedY);
-	bool noX = FuzzyEquals(xAxis, 0, CONTROLLER_JOY_ZERO_RANGE_MAX);
-
-	// Turning doesn't do what it's meant to, but it works.
-	if (noX && !FuzzyEquals(yAxis, 0, CONTROLLER_JOY_ZERO_RANGE_MAX))
-	{
-		MoveStraight(fixedY);
-	}
-	else if (!noX && fixedX > 0)
-	{
-		// Right
-	  nxtDisplayBigTextLine(0, "Right");
-		frontLeftSpeed += fixedX;
-		backLeftSpeed += fixedX;
-		frontRightSpeed -= fixedX;
-		backRightSpeed -= fixedX;
-	}
-	else if (!noX && fixedX < 0)
-	{
-		// Left
-		nxtDisplayBigTextLine(0, "Left");
-		frontLeftSpeed -= fixedX;
-		backLeftSpeed -= fixedX;
-		frontRightSpeed += fixedX;
-		backRightSpeed += fixedX;
-	}
-	else
-	{
-		setDriveMotors(0, false, false);
-	}
-
-	UpdateMotors();
-}
-*/
 
 #endif // REVOLUTION_MOTOR_H

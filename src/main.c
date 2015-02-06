@@ -9,10 +9,10 @@
 #pragma config(Motor,  mtr_S1_C1_2,     backRight,     tmotorTetrix, openLoop)
 #pragma config(Motor,  mtr_S1_C2_1,     frontRight,    tmotorTetrix, openLoop)
 #pragma config(Motor,  mtr_S1_C2_2,     linearRight,   tmotorTetrix, openLoop)
-#pragma config(Motor,  mtr_S2_C1_1,     linearLeft,    tmotorTetrix, openLoop)
+#pragma config(Motor,  mtr_S2_C1_1,     linearLeft,    tmotorTetrix, openLoop, reversed)
 #pragma config(Motor,  mtr_S2_C1_2,     frontLeft,     tmotorTetrix, openLoop, reversed)
-#pragma config(Servo,  srvo_S2_C2_1,    pullerLeft,           tServoStandard)
-#pragma config(Servo,  srvo_S2_C2_2,    pullerRight,          tServoStandard)
+#pragma config(Servo,  srvo_S2_C2_1,    pullerLeft,           tServoContinuousRotation)
+#pragma config(Servo,  srvo_S2_C2_2,    pullerRight,          tServoContinuousRotation)
 #pragma config(Servo,  srvo_S2_C2_3,    doorFront,            tServoStandard)
 #pragma config(Servo,  srvo_S2_C2_4,    doorBack,             tServoStandard)
 #pragma config(Servo,  srvo_S2_C2_5,    servo5,               tServoNone)
@@ -36,63 +36,57 @@ task main()
 {
 	initRobot();
 
-	//waitForStart();
+	waitForStart();
 
 	while(1)
 	{
 		getJoystickSettings(joystick);
 
-		//nxtDisplayBigTextLine(0, "Driver");
-		//nxtDisplayBigTextLine(2, "En: %f", en);
-
 	  HandleDriveTrain(getRightJoyY(CONTROLLER_ONE), getRightJoyX(CONTROLLER_ONE));
-	  HandleLinear(getLeftJoyY(CONTROLLER_TWO);
+	  HandleLinear(getLeftJoyY(CONTROLLER_ONE);
 	  UpdateMotors();
-	  nxtDisplayBigTextLine(6, "%i", nMotorEncoder[backRight]);
 
-		if (joy1Btn(CONTROLLER_BUTTON_A) == 1 || joy2Btn(CONTROLLER_BUTTON_A) == 1)
+		if (joy1Btn(CONTROLLER_BUTTON_A))
 		{
-	  	//Drive(12, 20);
-			//Turn(-1700, 100);
-
-	  	if (spinning)
-	  		StopSpinners();
-	  	else
-	  		SpinSpinners();
-	  		4
-		}
-
-		if (joy1Btn(CONTROLLER_BUTTON_X))
-		{
-			nMotorEncoder[backRight] = 0;
-			servo[pullerLeft] = 178;
-			servo[pullerRight] = 100;
-		}
-
-		if (joy1Btn(CONTROLLER_BUTTON_Y))
-		{
-			servo[pullerLeft] = 100;
-			servo[pullerRight] = 225;
-		}
-
-		if (joy1Btn(CONTROLLER_BUTTON_RIGHT_TRIGGER))
-		{
-			//servo[doorBack] = 150;
-		}
-
-		if (joy1Btn(CONTROLLER_BUTTON_RIGHT_BUMPPER))
-		{
-			//servo[doorBack] = 0;
+	  	SpinSpinners();
 		}
 
 		if (joy1Btn(CONTROLLER_BUTTON_B))
 		{
-			servo[doorFront] = 10;
+			StopSpinners();
 		}
 
-		if (joy1Btn(CONTROLLER_BUTTON_LEFT_BUMPPER))
+		if (joy1Btn(CONTROLLER_BUTTON_X))
 		{
-			servo[doorFront] = 100;
+			servo[pullerLeft] = SERVO_LEFT_DOWN;
+			servo[pullerRight] = SERVO_RIGHT_DOWN;
+		}
+
+		if (joy1Btn(CONTROLLER_BUTTON_Y))
+		{
+			// Up
+			servo[pullerLeft] = SERVO_LEFT_UP;
+			servo[pullerRight] = SERVO_RIGHT_UP;
+		}
+
+		if (joy2Btn(CONTROLLER_BUTTON_A))
+		{
+				servo[doorBack] = 125;
+		}
+
+			if (joy2Btn(CONTROLLER_BUTTON_B))
+		{
+			servo[doorBack] = 255;
+		}
+
+		if (joy2Btn(CONTROLLER_BUTTON_X))
+		{
+			servo[doorFront] = 60;
+		}
+
+		if (joy2Btn(CONTROLLER_BUTTON_Y))
+		{
+			servo[doorFront] = 255;
 		}
 	}
 }
