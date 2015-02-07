@@ -15,7 +15,7 @@
 #define WHEEL_45_DEGREES (WHEEL_90_DEGREES / 2)
 #define SERVO_LEFT_DOWN (178)
 #define SERVO_LEFT_UP (100)
-#define SERVO_RIGHT_DOWN (100)
+#define SERVO_RIGHT_DOWN (80)
 #define SERVO_RIGHT_UP (275)
 
 int frontLeftSpeed;
@@ -94,8 +94,12 @@ void setDriveMotors(int speed, bool invertLeft, bool invertRight)
 	}
 }
 
-void Stop()
+void StopDriveMotors()
 {
+	motor[frontLeft] = 0;
+	motor[frontRight] = 0;
+	motor[backLeft] = 0;
+	motor[backRight] = 0;
 	frontRightSpeed = 0;
 	frontLeftSpeed = 0;
 	backRightSpeed = 0;
@@ -184,6 +188,7 @@ void Drive(float inches, float speed)
 	{
 		while(nMotorEncoder[backRight] < goal)
 		{
+			nxtDisplayBigTextLine(2, "%i", nMotorEncoder[backRight]);
 			motor[frontLeft] = speed;
 			motor[frontRight] = speed;
 			motor[backLeft] = speed;
@@ -196,7 +201,7 @@ void Drive(float inches, float speed)
 	{
 		while(nMotorEncoder[backRight] > goal)
 		{
-			// Problem
+			nxtDisplayBigTextLine(2, "%i", nMotorEncoder[backRight]);
 			motor[frontLeft] = -speed;
 			motor[frontRight] = -speed;
 			motor[backLeft] = -speed;

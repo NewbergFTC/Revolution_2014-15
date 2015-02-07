@@ -14,14 +14,15 @@
 #define IR_SECTOR_EIGHT (8)
 #define IR_SECTOR_NINE  (9)
 
-uint IR_Sector;
+uint IR;
 
 task Start_IR()
 {
+	IR = IR_SECTOR_NULL;
+
   while(1)
-  {  
-    IR_Sector = SensorValue(IR_SENSOR);
-    wait1Msec(100);
+  {
+    IR = SensorValue[IR_Sensor];
   }
 }
 

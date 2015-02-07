@@ -1,8 +1,6 @@
 #pragma config(Hubs,  S1, HTMotor,  HTMotor,  none,     none)
 #pragma config(Hubs,  S2, HTMotor,  HTServo,  none,     none)
-#pragma config(Sensor, S1,     ,               sensorI2CMuxController)
-#pragma config(Sensor, S2,     ,               sensorI2CMuxController)
-#pragma config(Sensor, S3,     IRSeeker,       sensorHiTechnicIRSeeker1200)
+#pragma config(Sensor, S3,     IR_Sensor,      sensorHiTechnicIRSeeker1200)
 #pragma config(Motor,  motorA,          spinnerLeft,   tmotorNXT, PIDControl, encoder)
 #pragma config(Motor,  motorB,          spinnerRight,  tmotorNXT, PIDControl, encoder)
 #pragma config(Motor,  motorC,           ,             tmotorNXT, openLoop)
@@ -61,12 +59,12 @@ void initializeRobot()
 	servoChangeRate[pullerLeft] = 2;
 	servoChangeRate[pullerRight] = 3;
 
-	startTask(Start_IR);
+
 
 	nMotorEncoder[backRight] = 0;
 
 	eraseDisplay();
-        autoRoutine = selectAutoRoutine();
+  autoRoutine = selectAutoRoutine();
 
   return;
 }
@@ -100,15 +98,24 @@ void  routineOne()
   eraseDisplay();
   nxtDisplayBigTextLine(0, "One");
 
+  RetractGrabbers();
+
+
+  /*
   // Our goal here is to grab a goal, then try and knock over a pole
   RetractGrabbers();		// Make sure the grabbers are up
-  Drive(-101, 90); 		// Drive off the ramp
+  Drive(-64, 90); 		// Drive off the ramp
   wait1Msec(250);		// ----May need more stuff here to grab the goal----
+  Drive(-28, 10);
+  wait1Msec(500);
+  StopDriveMotors();
   DeployGrabbers();		// Deploy the grabbers, hopefully grab a goal
-  Turn(-WHEEL_45_DEGREES, 90);  // Ideally turn 45* away from the wall
-  wait1Msec(250);
-  Drive(12, 90);		// ----TODO: Knock down the pole----
-  wait1Msec(250);
+  wait1Msec(2000);
+  //Turn(-WHEEL_45_DEGREES, 90);  // Ideally turn 45* away from the wall
+  //wait1Msec(250);
+  //Drive(12, 90);		// ----TODO: Knock down the pole----
+  //wait1Msec(250);
+  */
 };
 
 // Red - Ground

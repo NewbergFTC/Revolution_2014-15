@@ -1,7 +1,6 @@
 #pragma config(Hubs,  S1, HTMotor,  HTMotor,  none,     none)
 #pragma config(Hubs,  S2, HTMotor,  HTServo,  none,     none)
-#pragma config(Sensor, S1,     ,               sensorI2CMuxController)
-#pragma config(Sensor, S2,     ,               sensorI2CMuxController)
+#pragma config(Sensor, S3,     IR_Sensor,      sensorHiTechnicIRSeeker1200)
 #pragma config(Motor,  motorA,          spinnerLeft,   tmotorNXT, PIDControl, encoder)
 #pragma config(Motor,  motorB,          spinnerRight,  tmotorNXT, PIDControl, encoder)
 #pragma config(Motor,  motorC,           ,             tmotorNXT, openLoop)
@@ -22,12 +21,15 @@
 #include "Util.h"
 #include "Motor.h"
 #include "Controller.h"
+#include "IR.h"
 
 void initRobot()
 {
 	disableDiagnosticsDisplay();
 	servoChangeRate[pullerLeft] = 2;
 	servoChangeRate[pullerRight] = 3;
+
+	startTask(Start_IR);
 
 	nMotorEncoder[backRight] = 0;
 }
@@ -45,14 +47,17 @@ task main()
 	  HandleDriveTrain(getRightJoyY(CONTROLLER_ONE), getRightJoyX(CONTROLLER_ONE));
 	  HandleLinear(getLeftJoyY(CONTROLLER_ONE);
 	  UpdateMotors();
+	  nxtDisplayBigTextLine(0, "IR: %i", IR);
 
 		if (joy1Btn(CONTROLLER_BUTTON_A))
 		{
+			//Drive(10, 90);
 	  	SpinSpinners();
 		}
 
 		if (joy1Btn(CONTROLLER_BUTTON_B))
 		{
+			//Drive(-10, 90);
 			StopSpinners();
 		}
 
