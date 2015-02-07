@@ -42,14 +42,14 @@ void StopSpinners()
 	motor[spinnerRight] = 0;
 }
 
-task DeployGrabbers()
+void DeployGrabbers()
 {
 	servo[pullerLeft] = SERVO_LEFT_DOWN;
 	servo[pullerRight] = SERVO_RIGHT_DOWN;
 }
 
 
-task RetractGrabbers()
+void RetractGrabbers()
 {
 	servo[pullerLeft] = SERVO_LEFT_UP;
 	servo[pullerRight] = SERVO_RIGHT_UP;

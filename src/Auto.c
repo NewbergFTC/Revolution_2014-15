@@ -35,6 +35,7 @@
 #include "Util.h"
 #include "Motor.h"
 #include "Auto.h"
+#include "IR.h"
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -54,15 +55,18 @@
 void initializeRobot()
 {
 	disableDiagnosticsDisplay();
+
   // Place code here to sinitialize servos to starting positions.
   // Sensors are automatically configured and setup by ROBOTC. They may need a brief time to stabilize.
 	servoChangeRate[pullerLeft] = 2;
 	servoChangeRate[pullerRight] = 3;
 
+	startTask(Start_IR);
+
 	nMotorEncoder[backRight] = 0;
 
 	eraseDisplay();
-	autoRoutine = selectAutoRoutine();
+        autoRoutine = selectAutoRoutine();
 
   return;
 }
@@ -90,30 +94,37 @@ void initializeRobot()
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Red - Ramp
+// Start backwords
 void  routineOne()
 {
-		eraseDisplay();
-		nxtDisplayBigTextLine(0, "One");
+  eraseDisplay();
+  nxtDisplayBigTextLine(0, "One");
 
-		Drive(-101, 90);
-		wait1Msec(250);
-		startTask(DeployGrabbers);
-		Turn(-WHEEL_45_DEGREES, 90);
-		wait1Msec(250);
-		Drive(12, 90);
-		wait1Msec(250);
+  // Our goal here is to grab a goal, then try and knock over a pole
+  RetractGrabbers();		// Make sure the grabbers are up
+  Drive(-101, 90); 		// Drive off the ramp
+  wait1Msec(250);		// ----May need more stuff here to grab the goal----
+  DeployGrabbers();		// Deploy the grabbers, hopefully grab a goal
+  Turn(-WHEEL_45_DEGREES, 90);  // Ideally turn 45* away from the wall
+  wait1Msec(250);
+  Drive(12, 90);		// ----TODO: Knock down the pole----
+  wait1Msec(250);
 };
 
 // Red - Ground
 void routineTwo()
 {
-	while (1)
-	{
-		eraseDisplay();
-		nxtDisplayBigTextLine(0, "Two");
+  eraseDisplay();
+  nxtDisplayBigTextLine(0, "Two");
 
-	//	Drive(25, 90);
-	}
+  // Our goal here is to knock down the pole, then try and grab a bucket
+  RetractGrabbers();
+  Drive(5, 90);			// TODO: Have a real distance here
+				// Drive a little away from the wall so we don't hit it when turning
+  wait1Msec(250);
+  Turn(WHEEL_90_DEGREES, 90);   // Turn 90* so our back will hit the pole
+  wait1Msec(250);
+  Turn(WHEEL_90_DEGREES, 90);
 };
 
 // Blue - Ramp

@@ -8,7 +8,8 @@
 #define AUTO_ROUTINE_FOUR	4
 #define AUTO_ROUTINE_COUNT 4
 
-unsigned short autoRoutine;
+ushort autoRoutine;
+uint watchDogDelay;
 
 // TODO: Routines
 
@@ -75,5 +76,11 @@ int selectAutoRoutine()
 			nxtDisplayTextLine(5, "Choice %i of %i", currMenuPos + 1, AUTO_ROUTINE_COUNT);
 	}
 };
+
+task WatchDog()
+{
+  wait1Msec(watchDogDelay);
+  StopAllTasks();
+}
 
 #endif //REVOLUTION_AUTO_H

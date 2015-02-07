@@ -2,6 +2,7 @@
 #define REVOLUTION_UTIL_H
 
 typedef unsigned int uint;
+typedef unsigned short ushort;
 
 /*
  * General Helpers
