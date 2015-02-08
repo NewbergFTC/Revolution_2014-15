@@ -8,7 +8,7 @@
 #pragma config(Motor,  mtr_S1_C1_2,     backRight,     tmotorTetrix, openLoop)
 #pragma config(Motor,  mtr_S1_C2_1,     frontRight,    tmotorTetrix, openLoop)
 #pragma config(Motor,  mtr_S1_C2_2,     linearRight,   tmotorTetrix, openLoop)
-#pragma config(Motor,  mtr_S2_C1_1,     linearLeft,    tmotorTetrix, openLoop, reversed)
+#pragma config(Motor,  mtr_S2_C1_1,     motorH,        tmotorTetrix, openLoop)
 #pragma config(Motor,  mtr_S2_C1_2,     frontLeft,     tmotorTetrix, openLoop, reversed)
 #pragma config(Servo,  srvo_S2_C2_1,    pullerLeft,           tServoContinuousRotation)
 #pragma config(Servo,  srvo_S2_C2_2,    pullerRight,          tServoContinuousRotation)
@@ -47,17 +47,14 @@ task main()
 	  HandleDriveTrain(getRightJoyY(CONTROLLER_ONE), getRightJoyX(CONTROLLER_ONE));
 	  HandleLinear(getLeftJoyY(CONTROLLER_ONE);
 	  UpdateMotors();
-	  nxtDisplayBigTextLine(0, "IR: %i", IR);
 
 		if (joy1Btn(CONTROLLER_BUTTON_A))
 		{
-			//Drive(10, 90);
 	  	SpinSpinners();
 		}
 
 		if (joy1Btn(CONTROLLER_BUTTON_B))
 		{
-			//Drive(-10, 90);
 			StopSpinners();
 		}
 

@@ -23,6 +23,7 @@ task Start_IR()
   while(1)
   {
     IR = SensorValue[IR_Sensor];
+    nxtDisplayBigTextLine(0, "IR: %i", IR);
   }
 }
 

@@ -15,14 +15,13 @@
 #define WHEEL_45_DEGREES (WHEEL_90_DEGREES / 2)
 #define SERVO_LEFT_DOWN (178)
 #define SERVO_LEFT_UP (100)
-#define SERVO_RIGHT_DOWN (80)
+#define SERVO_RIGHT_DOWN (90)
 #define SERVO_RIGHT_UP (275)
 
 int frontLeftSpeed;
 int frontRightSpeed;
 int backLeftSpeed;
 int backRightSpeed;
-int linearLeftSpeed;
 int linearRightSpeed;
 
 int FixSpeed(int rawSpeed)
@@ -61,7 +60,6 @@ void UpdateMotors()
 	motor[frontRight] = frontRightSpeed;
 	motor[backLeft] = backLeftSpeed;
 	motor[backRight] = backRightSpeed;
-	motor[linearLeft] = -linearLeftSpeed;
 	motor[linearRight] = linearRightSpeed;
 }
 
@@ -210,20 +208,18 @@ void Drive(float inches, float speed)
 		complete = true;
 	}
 
-	Stop();
+	StopDriveMotors();
 }
 
 void HandleLinear(float y)
 {
 	if (FuzzyEquals(y, 0, 15))
 	{
-		linearLeftSpeed = 0;
 		linearRightSpeed = 0;
 	}
 
 	float fixed = FixSpeed(y);
 
-	linearLeftSpeed = fixed;
 	linearRightSpeed = -fixed;
 }
 

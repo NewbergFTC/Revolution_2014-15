@@ -59,8 +59,6 @@ void initializeRobot()
 	servoChangeRate[pullerLeft] = 2;
 	servoChangeRate[pullerRight] = 3;
 
-
-
 	nMotorEncoder[backRight] = 0;
 
 	eraseDisplay();
@@ -98,10 +96,6 @@ void  routineOne()
   eraseDisplay();
   nxtDisplayBigTextLine(0, "One");
 
-  RetractGrabbers();
-
-
-  /*
   // Our goal here is to grab a goal, then try and knock over a pole
   RetractGrabbers();		// Make sure the grabbers are up
   Drive(-64, 90); 		// Drive off the ramp
@@ -115,7 +109,6 @@ void  routineOne()
   //wait1Msec(250);
   //Drive(12, 90);		// ----TODO: Knock down the pole----
   //wait1Msec(250);
-  */
 };
 
 // Red - Ground
@@ -142,8 +135,14 @@ void routineThree()
 		eraseDisplay();
 		nxtDisplayBigTextLine(0, "Three");
 
-	//	Drive(70, 90);
-	//	TurnLeft(45);
+  RetractGrabbers();		// Make sure the grabbers are up
+  Drive(-64, 90); 		// Drive off the ramp
+  wait1Msec(250);		// ----May need more stuff here to grab the goal----
+  Drive(-28, 10);
+  wait1Msec(500);
+  StopDriveMotors();
+  DeployGrabbers();		// Deploy the grabbers, hopefully grab a goal
+  wait1Msec(2000);
 	}
 };
 
