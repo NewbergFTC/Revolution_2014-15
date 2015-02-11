@@ -98,12 +98,11 @@ void  routineOne()
 
   // Our goal here is to grab a goal, then try and knock over a pole
   RetractGrabbers();		// Make sure the grabbers are up
-  Drive(-64, 90); 		// Drive off the ramp
+  servo[doorFront] = 255;
+  servo[doorBack] = 255;
+  Drive(67, 90); 		// Drive off the ramp
   wait1Msec(250);		// ----May need more stuff here to grab the goal----
-  Drive(-28, 10);
-  wait1Msec(500);
   StopDriveMotors();
-  DeployGrabbers();		// Deploy the grabbers, hopefully grab a goal
   wait1Msec(2000);
   //Turn(-WHEEL_45_DEGREES, 90);  // Ideally turn 45* away from the wall
   //wait1Msec(250);
@@ -119,31 +118,20 @@ void routineTwo()
 
   // Our goal here is to knock down the pole, then try and grab a bucket
   RetractGrabbers();
-  Drive(5, 90);			// TODO: Have a real distance here
-				// Drive a little away from the wall so we don't hit it when turning
-  wait1Msec(250);
-  Turn(WHEEL_90_DEGREES, 90);   // Turn 90* so our back will hit the pole
-  wait1Msec(250);
-  Turn(WHEEL_90_DEGREES, 90);
+  Drive(12, 90);			// TODO: Have a real distance here
 };
 
 // Blue - Ramp
 void routineThree()
 {
-	while (1)
-	{
+
 		eraseDisplay();
 		nxtDisplayBigTextLine(0, "Three");
 
-  RetractGrabbers();		// Make sure the grabbers are up
-  Drive(-64, 90); 		// Drive off the ramp
-  wait1Msec(250);		// ----May need more stuff here to grab the goal----
-  Drive(-28, 10);
-  wait1Msec(500);
-  StopDriveMotors();
-  DeployGrabbers();		// Deploy the grabbers, hopefully grab a goal
-  wait1Msec(2000);
-	}
+    RetractGrabbers();		// Make sure the grabbers are up
+    Drive(-64, 90); 		// Drive off the ramp
+    StopDriveMotors();
+    wait1Msec(250);		// ----May need more stuff here to grab the goal----
 };
 
 // Blue - Ground

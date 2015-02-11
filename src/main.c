@@ -29,7 +29,7 @@ void initRobot()
 	servoChangeRate[pullerLeft] = 2;
 	servoChangeRate[pullerRight] = 3;
 
-	startTask(Start_IR);
+	stopTask(Start_IR);
 
 	nMotorEncoder[backRight] = 0;
 }
@@ -45,7 +45,7 @@ task main()
 		getJoystickSettings(joystick);
 
 	  HandleDriveTrain(getRightJoyY(CONTROLLER_ONE), getRightJoyX(CONTROLLER_ONE));
-	  HandleLinear(getLeftJoyY(CONTROLLER_ONE);
+	  HandleLinear(getLeftJoyY(CONTROLLER_TWO);
 	  UpdateMotors();
 
 		if (joy1Btn(CONTROLLER_BUTTON_A))
@@ -76,7 +76,7 @@ task main()
 				servo[doorBack] = 125;
 		}
 
-			if (joy2Btn(CONTROLLER_BUTTON_B))
+		if (joy2Btn(CONTROLLER_BUTTON_B))
 		{
 			servo[doorBack] = 255;
 		}

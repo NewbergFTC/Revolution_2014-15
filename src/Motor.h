@@ -108,7 +108,7 @@ void HandleDriveTrain(int yAxis, int xAxis)
 {
 	int fixedX = FixSpeed(xAxis);
 	int fixedY = FixSpeed(yAxis);
-	bool noX = FuzzyEquals(xAxis, 0, 15);
+	bool noX = FuzzyEquals(xAxis, 0, 40);
 
 	if (noX)
 	{
