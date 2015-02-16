@@ -15,14 +15,6 @@ string routineInfo[] = { "Red Ramp", "Red Ground", "Blue Ramp", "Blue Ground" };
 
 // TODO: Routines
 
-task displayState()
-{
-	while (1)
-	{
-		nxtDisplayBigTextLine(6, state);
-	}
-}
-
 int selectAutoRoutine()
 {
 	int currMenuPos = -1;
@@ -43,7 +35,6 @@ int selectAutoRoutine()
 	while (1)
 	{
 		TButtons nBtn;
-		state = IN_MENU;
 
 		while (1)
 		{

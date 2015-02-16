@@ -62,11 +62,9 @@ void initializeRobot()
 	nMotorEncoder[backRight] = 0;
 
 	startTask(Start_IR);
-	startTask(displayState);
 
 	eraseDisplay();
   autoRoutine = selectAutoRoutine();
-	state = WAITING;
 
   return;
 }
@@ -96,8 +94,14 @@ void initializeRobot()
 uint IRCheckCount = 0;
 
 bool rampstartPosOne = false;
+bool rampstartPosTwo = false;
+bool rampStartPosThree = false;
 bool rampEndPosOne = false;
+bool rampEndPosTwo = false;
+bool rampEndPosThree = false;
 bool rampEndTurnPosOne = false;
+bool rampEndTurnPosTwo = false;
+bool rampEndTurnPosThree = false;
 bool rampBackPosOne = false;
 bool rampLastPosOne = false;
 
@@ -108,26 +112,45 @@ void handleIR()
     if (FuzzyEquals(IR, 7, 1)) // Position One
     {
       rampstartPosOne = true;
+      rampstartPosTwo = true;
+      rampstartPosThree = true;
     }
   }
   else if (IRCheckCount == 1)
-  {  
+  {
     if (FuzzyEquals(IR, 5, 1))
     {
       rampEndPosOne = true;
     }
+
+    if (FuzzyEquals(IR, 6, 1))
+    {
+    	rampEndPosTwo = true;
+  	}
+
+  	if (FuzzyEquals(IR, 0, 1))
+  	{
+  		rampEndPosThree = true;
+  	}
   }
   else if (IRCheckCount == 2)
   {
     if (FuzzyEquals(IR, 3, 1))
-    { 
+    {
       rampEndTurnPosOne = true;
+      rampEndPosTwo = true;
     }
+
+    if (FuzzyEquals(IR, 0, 1))
+    {
+    	rampEndTurnPosThree	= true;
+  	}
   }
   else if (IRCheckCount == 3)
   {
     if (FuzzyEquals(IR, 5, 1))
     {
+      rampBackPosOne = true;
       rampBackPosOne = true;
     }
   }
@@ -176,21 +199,21 @@ void routineThree()
   RetractGrabbers();
   handleIR();
 
-  if (rampstartPosOne)
+  if (rampstartPosOne || rampstartPosTwo)
   {
-    Drive(67, 90);  // Drive off the ramp
+    Drive(68, 90);  // Drive off the ramp
     wait1Msec(250);
     handleIR();
-      
-    if (rampEndPosOne)
-    {  
+
+    if (rampEndPosOne || rampEndPosTwo)
+    {
       Turn(-WHEEL_45_DEGREES * 1.4, 90);  // Turn away from the ramp
       wait1Msec(250);
       handleIR();
 
-      if (rampEndTurnPosOne)
+      if (rampEndTurnPosOne || rampEndTurnPosTwo)
       {
-        Drive(-32, 90);  // Drive away from the ramp
+        Drive(-30, 90);  // Drive away from the ramp
         wait1Msec(250);
         handleIR();
 
@@ -200,13 +223,29 @@ void routineThree()
           wait1Msec(250);
           Drive(-32, 90);  // Knock down the pole
           wait1Msec(250);
-          Turn(-WHEEL_45_DEGREES * 0.25, 90);  // Make sure it's down
+          Turn(-WHEEL_45_DEGREES * 0.4, 90);  // Make sure it's down
           wait1Msec(250);
           Drive(20, 90);  // Drive away
           wait1Msec(250);
         }
-      }  
-    }    
+      }
+    }
+
+    if (rampEndPosThree)
+    {
+   		Turn(-WHEEL_90_DEGREES, 90);
+   	  wait1Msec(250);
+   	  handleIR();
+
+   	  if (rampEndTurnPosThree)
+   	  {
+   	  	Drive(-44, 90);
+   	  	wait1Msec(250);
+   	  	Turn(-WHEEL_45_DEGREES, 90);
+   	  	wait1Msec(250);
+   	  	Drive(12, 90);
+   		}
+    }
   }
 };
 
@@ -231,7 +270,6 @@ task main()
   nxtDisplayBigTextLine(2, "%u", autoRoutine);
 
   waitForStart(); // Wait for the beginning of autonomous phase.
-	state = STARTING;
 
   ///////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////
