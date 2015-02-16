@@ -61,8 +61,12 @@ void initializeRobot()
 
 	nMotorEncoder[backRight] = 0;
 
+	startTask(Start_IR);
+	startTask(displayState);
+
 	eraseDisplay();
   autoRoutine = selectAutoRoutine();
+	state = WAITING;
 
   return;
 }
@@ -88,6 +92,34 @@ void initializeRobot()
 // At the end of the autonomous period, the FMS will autonmatically abort (stop) execution of the program.
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////
+
+typedef enum
+{
+	IN_MENU,
+	WAITING,
+	STARTING,
+	RUNNING,
+
+} State;
+
+State state;
+
+bool rampstartPosOne = false;
+bool rampEndPosOne = false;
+bool rampEndTurnPosOne = false;
+bool rampBackPosOne = false;
+bool rampLastPosOne = false;
+
+void handleIR()
+{
+		if (state == STARTING)
+		{
+			if (FuzzyEquals(IR, 7, 1))
+			{
+				rampstartPosOne = true;
+			}
+		}
+}
 
 // Red - Ramp
 // Start backwords
@@ -124,14 +156,25 @@ void routineTwo()
 // Blue - Ramp
 void routineThree()
 {
-
 		eraseDisplay();
 		nxtDisplayBigTextLine(0, "Three");
 
+		handleIR();
     RetractGrabbers();		// Make sure the grabbers are up
-    Drive(-64, 90); 		// Drive off the ramp
-    StopDriveMotors();
-    wait1Msec(250);		// ----May need more stuff here to grab the goal----
+    Drive(67, 90); 		// Drive off the ramp
+    wait1Msec(250);
+    Turn(-WHEEL_45_DEGREES * 1.4, 90);
+    wait1Msec(250);
+    Drive(-32, 90);
+    wait1Msec(250);
+    Turn(-WHEEL_45_DEGREES * 0.7, 90);
+    wait1Msec(250);
+    Drive(-32, 90);
+    wait1Msec(250);
+    Turn(-WHEEL_45_DEGREES * 0.25, 90);
+    wait1Msec(250);
+    Drive(20, 90);
+    wait1Msec(250);
 };
 
 // Blue - Ground
@@ -155,6 +198,7 @@ task main()
   nxtDisplayBigTextLine(2, "%u", autoRoutine);
 
   waitForStart(); // Wait for the beginning of autonomous phase.
+	state = STARTING;
 
   ///////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////

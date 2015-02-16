@@ -153,6 +153,7 @@ void Turn(float degree, float speed)
 		{
 			while (nMotorEncoder[backRight] < goal)
 			{
+				nxtDisplayBigTextLine(2, "%i", nMotorEncoder[backRight]);
 				motor[frontRight] = speed;
 				motor[backRight] = speed;
 				motor[frontLeft] = -speed;
@@ -165,7 +166,7 @@ void Turn(float degree, float speed)
 		{
 			while (nMotorEncoder[backRight] > goal)
 			{
-				//nxtDisplayBigTextLine(6, "%i", nMotorEncoder[backRight]);
+				nxtDisplayBigTextLine(2, "%i", nMotorEncoder[backRight]);
 				motor[frontRight] = -speed;
 				motor[backRight] = -speed;
 				motor[frontLeft] = speed;
@@ -173,6 +174,8 @@ void Turn(float degree, float speed)
 			}
 			complete = true;
 		}
+
+		StopDriveMotors();
 }
 
 void Drive(float inches, float speed)

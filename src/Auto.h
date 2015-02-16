@@ -11,13 +11,26 @@
 ushort autoRoutine;
 uint watchDogDelay;
 
+string routineInfo[] = { "Red Ramp", "Red Ground", "Blue Ramp", "Blue Ground" };
+
 // TODO: Routines
+
+task displayState()
+{
+	while (1)
+	{
+		nxtDisplayBigTextLine(6, state);
+	}
+}
 
 int selectAutoRoutine()
 {
 	int currMenuPos = -1;
 	int finalMenuPos = -1;
 	nNxtButtonTask = -2;
+
+	disableDiagnosticsDisplay();
+	eraseDisplay();
 
 	nxtDisplayBigTextLine(1,"RouteMenu");
 	nxtDisplayTextLine(3,"Use arrow keys");
@@ -30,6 +43,7 @@ int selectAutoRoutine()
 	while (1)
 	{
 		TButtons nBtn;
+		state = IN_MENU;
 
 		while (1)
 		{
@@ -73,6 +87,7 @@ int selectAutoRoutine()
 
 			eraseDisplay();
 			nxtDisplayBigTextLine(1, "%i", currMenuPos + 1);
+			nxtDisplayTextLine(3, routineInfo[currMenuPos]);
 			nxtDisplayTextLine(5, "Choice %i of %i", currMenuPos + 1, AUTO_ROUTINE_COUNT);
 	}
 };

@@ -1,11 +1,13 @@
 #pragma config(Hubs,  S1, HTMotor,  HTMotor,  none,     none)
 #pragma config(Hubs,  S2, HTMotor,  HTServo,  none,     none)
+#pragma config(Sensor, S1,     ,               sensorI2CMuxController)
+#pragma config(Sensor, S2,     ,               sensorI2CMuxController)
 #pragma config(Sensor, S3,     IR_Sensor,      sensorHiTechnicIRSeeker1200)
 #pragma config(Motor,  motorA,          spinnerLeft,   tmotorNXT, PIDControl, encoder)
 #pragma config(Motor,  motorB,          spinnerRight,  tmotorNXT, PIDControl, encoder)
 #pragma config(Motor,  motorC,           ,             tmotorNXT, openLoop)
 #pragma config(Motor,  mtr_S1_C1_1,     backLeft,      tmotorTetrix, openLoop, reversed)
-#pragma config(Motor,  mtr_S1_C1_2,     backRight,     tmotorTetrix, openLoop)
+#pragma config(Motor,  mtr_S1_C1_2,     backRight,     tmotorTetrix, openLoop, encoder)
 #pragma config(Motor,  mtr_S1_C2_1,     frontRight,    tmotorTetrix, openLoop)
 #pragma config(Motor,  mtr_S1_C2_2,     linearRight,   tmotorTetrix, openLoop)
 #pragma config(Motor,  mtr_S2_C1_1,     motorH,        tmotorTetrix, openLoop)
@@ -29,7 +31,7 @@ void initRobot()
 	servoChangeRate[pullerLeft] = 2;
 	servoChangeRate[pullerRight] = 3;
 
-	stopTask(Start_IR);
+	startTask(Start_IR);
 
 	nMotorEncoder[backRight] = 0;
 }
@@ -47,21 +49,28 @@ task main()
 	  HandleDriveTrain(getRightJoyY(CONTROLLER_ONE), getRightJoyX(CONTROLLER_ONE));
 	  HandleLinear(getLeftJoyY(CONTROLLER_TWO);
 	  UpdateMotors();
+	  nxtDisplayBigTextLine(2, "%i", nMotorEncoder[backRight]);
 
 		if (joy1Btn(CONTROLLER_BUTTON_A))
 		{
-	  	SpinSpinners();
+			Turn(-WHEEL_45_DEGREES * 1.4, 90);
+			wait1Msec(250);
+			//Turn(WHEEL_45_DEGREES, 90);
+
+	  	//SpinSpinners();
 		}
 
 		if (joy1Btn(CONTROLLER_BUTTON_B))
 		{
-			StopSpinners();
+			nMotorEncoder[backRight] = 0;
+			//StopSpinners();
 		}
 
 		if (joy1Btn(CONTROLLER_BUTTON_X))
 		{
-			servo[pullerLeft] = SERVO_LEFT_DOWN;
-			servo[pullerRight] = SERVO_RIGHT_DOWN;
+			Turn(1, 1);
+		//	servo[pullerLeft] = SERVO_LEFT_DOWN;
+			//servo[pullerRight] = SERVO_RIGHT_DOWN;
 		}
 
 		if (joy1Btn(CONTROLLER_BUTTON_Y))
