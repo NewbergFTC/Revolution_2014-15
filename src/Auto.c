@@ -93,16 +93,7 @@ void initializeRobot()
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 
-typedef enum
-{
-	IN_MENU,
-	WAITING,
-	STARTING,
-	RUNNING,
-
-} State;
-
-State state;
+uint IRCheckCount = 0;
 
 bool rampstartPosOne = false;
 bool rampEndPosOne = false;
@@ -112,13 +103,36 @@ bool rampLastPosOne = false;
 
 void handleIR()
 {
-		if (state == STARTING)
-		{
-			if (FuzzyEquals(IR, 7, 1))
-			{
-				rampstartPosOne = true;
-			}
-		}
+  if (IRCheckCount == 0)
+  {
+    if (FuzzyEquals(IR, 7, 1)) // Position One
+    {
+      rampstartPosOne = true;
+    }
+  }
+  else if (IRCheckCount == 1)
+  {  
+    if (FuzzyEquals(IR, 5, 1))
+    {
+      rampEndPosOne = true;
+    }
+  }
+  else if (IRCheckCount == 2)
+  {
+    if (FuzzyEquals(IR, 3, 1))
+    { 
+      rampEndTurnPosOne = true;
+    }
+  }
+  else if (IRCheckCount == 3)
+  {
+    if (FuzzyEquals(IR, 5, 1))
+    {
+      rampBackPosOne = true;
+    }
+  }
+
+  IRCheckCount++;
 }
 
 // Red - Ramp
@@ -156,25 +170,44 @@ void routineTwo()
 // Blue - Ramp
 void routineThree()
 {
-		eraseDisplay();
-		nxtDisplayBigTextLine(0, "Three");
+  eraseDisplay();
+  nxtDisplayBigTextLine(0, "Three");
 
-		handleIR();
-    RetractGrabbers();		// Make sure the grabbers are up
-    Drive(67, 90); 		// Drive off the ramp
+  RetractGrabbers();
+  handleIR();
+
+  if (rampstartPosOne)
+  {
+    Drive(67, 90);  // Drive off the ramp
     wait1Msec(250);
-    Turn(-WHEEL_45_DEGREES * 1.4, 90);
-    wait1Msec(250);
-    Drive(-32, 90);
-    wait1Msec(250);
-    Turn(-WHEEL_45_DEGREES * 0.7, 90);
-    wait1Msec(250);
-    Drive(-32, 90);
-    wait1Msec(250);
-    Turn(-WHEEL_45_DEGREES * 0.25, 90);
-    wait1Msec(250);
-    Drive(20, 90);
-    wait1Msec(250);
+    handleIR();
+      
+    if (rampEndPosOne)
+    {  
+      Turn(-WHEEL_45_DEGREES * 1.4, 90);  // Turn away from the ramp
+      wait1Msec(250);
+      handleIR();
+
+      if (rampEndTurnPosOne)
+      {
+        Drive(-32, 90);  // Drive away from the ramp
+        wait1Msec(250);
+        handleIR();
+
+        if (rampBackPosOne)
+        {
+          Turn(-WHEEL_45_DEGREES * 0.7, 90);  // Turn towards the pole
+          wait1Msec(250);
+          Drive(-32, 90);  // Knock down the pole
+          wait1Msec(250);
+          Turn(-WHEEL_45_DEGREES * 0.25, 90);  // Make sure it's down
+          wait1Msec(250);
+          Drive(20, 90);  // Drive away
+          wait1Msec(250);
+        }
+      }  
+    }    
+  }
 };
 
 // Blue - Ground
