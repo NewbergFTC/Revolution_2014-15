@@ -41,62 +41,62 @@
 
 bool getKeyDown(short key, unsigned short controller)
 {
-	if (controller == CONTROLLER_ONE)
-		return joy1Btn(key) == 1;
-	else if (controller == CONTROLLER_TWO)
-		return joy2Btn(key) == 1;
-	else
-		return false;
+    if (controller == CONTROLLER_ONE)
+        return joy1Btn(key) == 1;
+    else if (controller == CONTROLLER_TWO)
+        return joy2Btn(key) == 1;
+    else
+        return false;
 };
 
 int getLeftJoyX(unsigned short controller)
 {
-	if (controller == CONTROLLER_ONE)
-		return joystick.joy1_x1;
-	else if (controller == CONTROLLER_TWO)
-		return joystick.joy2_x1;
-	else
-		return 0;
+    if (controller == CONTROLLER_ONE)
+        return joystick.joy1_x1;
+    else if (controller == CONTROLLER_TWO)
+        return joystick.joy2_x1;
+    else
+        return 0;
 };
 
 int getLeftJoyY(unsigned short controller)
 {
-	if (controller == CONTROLLER_ONE)
-		return joystick.joy1_y1;
-	else if (controller == CONTROLLER_TWO)
-		return joystick.joy2_y1;
-	else
-		return 0;
+    if (controller == CONTROLLER_ONE)
+        return joystick.joy1_y1;
+    else if (controller == CONTROLLER_TWO)
+        return joystick.joy2_y1;
+    else
+        return 0;
 };
 
 int getRightJoyX(unsigned short controller)
 {
-	if (controller == CONTROLLER_ONE)
-		return joystick.joy1_x2;
-	else if (controller == CONTROLLER_TWO)
-		return joystick.joy2_x2;
-	else
-		return 0;
+    if (controller == CONTROLLER_ONE)
+        return joystick.joy1_x2;
+    else if (controller == CONTROLLER_TWO)
+        return joystick.joy2_x2;
+    else
+        return 0;
 };
 
 int getRightJoyY(unsigned short controller)
 {
-	if (controller == CONTROLLER_ONE)
-		return joystick.joy1_y2;
-	else if (controller == CONTROLLER_TWO)
-		return joystick.joy2_y2;
-	else
-		return 0;
+    if (controller == CONTROLLER_ONE)
+        return joystick.joy1_y2;
+    else if (controller == CONTROLLER_TWO)
+        return joystick.joy2_y2;
+    else
+        return 0;
 };
 
 int getTopHat(unsigned short controller)
 {
-	if (controller == CONTROLLER_ONE)
-		return joystick.joy1_TopHat;
-	else if (controller == CONTROLLER_TWO)
-		return joystick.joy2_TopHat;
-	else
-		return 0;
+    if (controller == CONTROLLER_ONE)
+        return joystick.joy1_TopHat;
+    else if (controller == CONTROLLER_TWO)
+        return joystick.joy2_TopHat;
+    else
+        return 0;
 };
 
 #endif //REVOLUTION_CONTROLLER_H

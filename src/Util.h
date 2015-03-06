@@ -2,7 +2,6 @@
 #define REVOLUTION_UTIL_H
 
 typedef unsigned int uint;
-typedef unsigned short ushort;
 
 /*
  * General Helpers
@@ -11,14 +10,14 @@ const float Epsilon = 0.000001; // A very tiny number (10e-6)
 
 bool FuzzyEquals(float value1, float value2, float epsilon=Epsilon)
 {
-	float a = value1 - value2;
+    float a = value1 - value2;
 
-	if (abs(a) < epsilon)
-	{
-		return true;
-	}
+    if (abs(a) < epsilon)
+    {
+        return true;
+    }
 
-	return false;
+    return false;
 }
 
 #endif /* REVOLUTION_UTIL_H */
