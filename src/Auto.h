@@ -10,7 +10,7 @@
 uint autoRoutine;
 uint watchDogDelay;
 
-string routineInfo[] = { "Red Ramp", "Red Ground", "Blue Ramp", "Blue Ground" };
+string routineInfo[] = { "Red Ramp", "Ground", "Blue Ramp", "Blue Ground" };
 
 int selectAutoRoutine()
 {
